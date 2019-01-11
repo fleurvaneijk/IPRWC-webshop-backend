@@ -23,7 +23,7 @@ public class AuthenticationServiceTest
     {
         // Deze DAO kan worden vervangen door een mockobject.
         // In dit voorbeeld is dat niet nodig omdat de DAO geen verbinding heeft
-        // met de database en een vaste lijst met gebruikers bevat.
+        // met de database.sql en een vaste lijst met gebruikers bevat.
         // (eigenlijk is deze DAO dus al een mockobject)
         UserDAO userDAO = new UserDAO();
         
