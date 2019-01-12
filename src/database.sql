@@ -1,15 +1,7 @@
 CREATE TABLE user_account (
-    id                SERIAL PRIMARY KEY,
-    fullName          VARCHAR(100) CHECK(length(fullName) >=3),
-    postcode          VARCHAR(7) CHECK(length(postcode) >=6),
-    streetnumber      VARCHAR(10) CHECK(length(streetnumber) >=1),
-    emailAddress      VARCHAR UNIQUE NOT NULL,
-    password          VARCHAR CHECK(length(password) >=8)
-);
-
-CREATE TABLE roles (
-    user_id           INTEGER
-    CONSTRAINT user_id REFERENCES user_account(id),
+    email             VARCHAR PRIMARY KEY,
+    name              VARCHAR(100) CHECK(length(name) >=3),
+    password          VARCHAR CHECK(length(password) >=8),
     role              VARCHAR
 );
 
@@ -23,8 +15,8 @@ CREATE TABLE product (
 
 CREATE TABLE basket (
     id                SERIAL PRIMARY KEY,
-    user_id           INTEGER NOT NULL
-    CONSTRAINT user_id REFERENCES user_account(id)
+    user_email        VARCHAR NOT NULL
+    CONSTRAINT user_email REFERENCES user_account(email)
 
 );
 
@@ -37,11 +29,9 @@ CREATE TABLE ordered_product (
 );
 
 
-INSERT INTO user_account(fullName, postcode, streetnumber, emailAddress, password) VALUES('Fleur van Eijk', '2153LN', '1052', 'fleur.vaneijk99@gmail.com', 'wachtwoord');
-INSERT INTO user_account(fullName, postcode, streetnumber, emailAddress, password) VALUES('admin', '9999AA', '1', 'admin@gmail.com', 'wachtwoord');
+INSERT INTO user_account(email, name, password, role) VALUES('fleur.vaneijk99@gmail.com', 'Fleur van Eijk', 'wachtwoord', 'guest');
+INSERT INTO user_account(email, name, password, role) VALUES('admin@gmail.com', 'Admin', 'wachtwoord', 'admin');
 
-INSERT INTO roles VALUES('1', 'guest');
-INSERT INTO roles VALUES('2', 'admin');
 
 INSERT INTO product(title, description, image, price) VALUES('Lampionmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'C:\Users\Fleur van Eijk\IdeaProjects\IPRWC-webshop-frontend\src\assets\lampion_mand.jpg', '20.00');
 INSERT INTO product(title, description, image, price) VALUES('Fruitmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'C:\Users\Fleur van Eijk\IdeaProjects\IPRWC-webshop-frontend\src\assets\fruitmand.jpg', '15.00');

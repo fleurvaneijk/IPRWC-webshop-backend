@@ -61,7 +61,7 @@ public class UserDAOTest
         System.out.println("Test by email address success");
         
         String expectedName = "First user";
-        User actual = subject.getByEmailAddress("first@user.com");
+        User actual = subject.getByEmail("first@user.com");
         
         assertNotNull(actual);
         assertEquals(expectedName, actual.getName());
@@ -72,7 +72,7 @@ public class UserDAOTest
     {
         System.out.println("Test by email address failed");
         
-        User actual = subject.getByEmailAddress("third@user.com");
+        User actual = subject.getByEmail("third@user.com");
         
         assertNull(actual);
     }
@@ -83,7 +83,7 @@ public class UserDAOTest
         System.out.println("Test add");
         
         User user = new User();
-        user.setFullName("Peter van Vliet");
+        user.setName("Peter van Vliet");
         
         subject.add(user);
         
@@ -97,7 +97,7 @@ public class UserDAOTest
     public void testUpdate()
     {
         User expected = new User();
-        expected.setFullName("Peter van Vliet");
+        expected.setName("Peter van Vliet");
         
         subject.update(1, expected);
         

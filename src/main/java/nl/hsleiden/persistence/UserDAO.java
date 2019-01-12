@@ -38,13 +38,8 @@ public class UserDAO
             resultSet = statement.executeQuery();
 
             while(resultSet.next()){
-                User user = new User(resultSet.getInt("id"),
-                        resultSet.getString("fullName"), resultSet.getString("postcode"),
-                        resultSet.getString("streetnumber"), resultSet.getString("emailAddress"),
-                        resultSet.getString("password"));
-
-                System.out.println(user.getName() + user.getEmailAddress());
-
+                User user = new User(resultSet.getString("email"), resultSet.getString("name"),
+                        resultSet.getString("password"), resultSet.getString("role"));
                 users.add(user);
             }
         }catch(SQLException sqle){
@@ -72,10 +67,10 @@ public class UserDAO
         }
     }
     
-    public User getByEmailAddress(String emailAddress)
+    public User getByEmail(String email)
     {
         Optional<User> result = users.stream()
-            .filter(user -> user.getEmailAddress().equals(emailAddress))
+            .filter(user -> user.getEmail().equals(email))
             .findAny();
         
         return result.isPresent()

@@ -1,6 +1,5 @@
 package nl.hsleiden.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
 import nl.hsleiden.View;
@@ -8,95 +7,54 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-/**
- * Meer informatie over validatie:
- *  http://hibernate.org/validator/
- * 
- * @author Peter van Vliet
- */
 public class User implements Principal
 {
     @NotEmpty
+    @Email
     @JsonView(View.Public.class)
-    private int id;
+    private String email;
 
     @NotEmpty
     @Length(min = 3, max = 100)
     @JsonView(View.Public.class)
-    private String fullName;
-    
-    @NotEmpty
-    @Length(min = 6, max = 7)
-    @JsonView(View.Public.class)
-    private String postcode;
-    
-    @NotEmpty
-    @Length(min = 1, max = 10)
-    @JsonView(View.Public.class)
-    private String streetnumber;
-    
-    @NotEmpty
-    @Email
-    @JsonView(View.Public.class)
-    private String emailAddress;
-    
+    private String name;
+
     @NotEmpty
     @Length(min = 8)
     @JsonView(View.Protected.class)
     private String password;
     
     @JsonView(View.Private.class)
-    private String[] roles;
+    private String role;
 
     public User() {}
 
-    public User(int id, String fullName, String postcode, String streetnumber, String emailAddress, String password) {
-        this.id = id;
-        this.fullName = fullName;
-        this.postcode = postcode;
-        this.streetnumber = streetnumber;
-        this.emailAddress = emailAddress;
+    public User(String email, String name, String password, String role) {
+        this.email = email;
+        this.name = name;
         this.password = password;
+        this.role = role;
     }
 
-    public String getFullName()
+    public String getEmail()
     {
-        return fullName;
+        return email;
     }
 
-    public void setFullName(String fullName)
+    public void setEmail(String email)
     {
-        this.fullName = fullName;
+        this.email = email;
     }
 
-    public String getPostcode()
+    @Override
+    public String getName()
     {
-        return postcode;
+        return name;
     }
 
-    public void setPostcode(String postcode)
+    public void setName(String name)
     {
-        this.postcode = postcode;
-    }
-
-    public String getStreetnumber()
-    {
-        return streetnumber;
-    }
-
-    public void setStreetnumber(String streetnumber)
-    {
-        this.streetnumber = streetnumber;
-    }
-
-    public String getEmailAddress()
-    {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
+        this.name = name;
     }
 
     public String getPassword()
@@ -109,41 +67,25 @@ public class User implements Principal
         this.password = password;
     }
 
-    @Override
-    @JsonIgnore
-    public String getName()
+    public void setRole(String role)
     {
-        return fullName;
-    }
-    
-    public String[] getRoles()
-    {
-        return roles;
-    }
-
-    public void setRoles(String[] roles)
-    {
-        this.roles = roles;
+        this.role = role;
     }
     
     public boolean hasRole(String roleName)
     {
-        if (roles != null)
+        if (role != null)
         {
-            for(String role : roles)
+            if(roleName.equals(role))
             {
-                if(roleName.equals(role))
-                {
-                    return true;
-                }
+                return true;
             }
         }
-        
         return false;
     }
     
     public boolean equals(User user)
     {
-        return emailAddress.equals(user.getEmailAddress());
+        return email.equals(user.getEmail());
     }
 }

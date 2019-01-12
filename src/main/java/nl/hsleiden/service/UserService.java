@@ -33,7 +33,7 @@ public class UserService extends BaseService<User>
     
     public void add(User user)
     {
-        user.setRoles(new String[] { "GUEST" });
+        user.setRole("GUEST");
         
         dao.add(user);
     }
