@@ -17,6 +17,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User implements Principal
 {
     @NotEmpty
+    @JsonView(View.Public.class)
+    private int id;
+
+    @NotEmpty
     @Length(min = 3, max = 100)
     @JsonView(View.Public.class)
     private String fullName;
@@ -43,6 +47,17 @@ public class User implements Principal
     
     @JsonView(View.Private.class)
     private String[] roles;
+
+    public User() {}
+
+    public User(int id, String fullName, String postcode, String streetnumber, String emailAddress, String password) {
+        this.id = id;
+        this.fullName = fullName;
+        this.postcode = postcode;
+        this.streetnumber = streetnumber;
+        this.emailAddress = emailAddress;
+        this.password = password;
+    }
 
     public String getFullName()
     {

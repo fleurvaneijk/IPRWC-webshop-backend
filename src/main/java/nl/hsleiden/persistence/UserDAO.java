@@ -1,5 +1,8 @@
 package nl.hsleiden.persistence;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,32 +17,46 @@ import nl.hsleiden.model.User;
 public class UserDAO
 {
     private final List<User> users;
-    
-    public UserDAO()
-    {
-        User user1 = new User();
-        user1.setFullName("First user");
-        user1.setPostcode("1234AB");
-        user1.setStreetnumber("12");
-        user1.setEmailAddress("first@user.com");
-        user1.setPassword("first");
-        user1.setRoles(new String[] { "GUEST", "ADMIN" });
-        
-        User user2 = new User();
-        user2.setFullName("Second user");
-        user2.setPostcode("9876ZY");
-        user2.setStreetnumber("98");
-        user2.setEmailAddress("second@user.com");
-        user2.setPassword("second");
-        user2.setRoles(new String[] { "GUEST" });
-        
+
+    private DatabaseConnection database;
+    private ResultSet resultSet = null;
+
+    public UserDAO() {
         users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
+    }
+
+    public UserDAO(DatabaseConnection database){
+        this.database = database;
+        users = new ArrayList<>();
     }
     
     public List<User> getAll()
     {
+        try{
+            String query = "SELECT * FROM user_account";
+            PreparedStatement statement = database.connect().prepareStatement(query);
+            resultSet = statement.executeQuery();
+
+            while(resultSet.next()){
+                User user = new User(resultSet.getInt("id"),
+                        resultSet.getString("fullName"), resultSet.getString("postcode"),
+                        resultSet.getString("streetnumber"), resultSet.getString("emailAddress"),
+                        resultSet.getString("password"));
+
+                System.out.println(user.getName() + user.getEmailAddress());
+
+                users.add(user);
+            }
+        }catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally {
+            try{
+                resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
         return users;
     }
     
