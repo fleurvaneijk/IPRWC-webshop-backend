@@ -11,7 +11,7 @@ public class DatabaseInfo {
     }
 
     public static final String productTableName = "product";
-    public class ProductColumnNames{
+    public class productColumnNames{
         public static final String id = "id";
         public static final String title = "title";
         public static final String description  = "description";

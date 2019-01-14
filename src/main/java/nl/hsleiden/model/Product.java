@@ -6,15 +6,16 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class Product {
+    @JsonView(View.Public.class)
+    private int product_id;
+
     @NotEmpty
     @JsonView(View.Public.class)
     private String title;
 
-    @NotEmpty
     @JsonView(View.Public.class)
     private String description;
 
-    @NotEmpty
     @JsonView(View.Public.class)
     private String imagePath;
 
@@ -22,6 +23,24 @@ public class Product {
     @JsonView(View.Public.class)
     private double price;
 
+    public Product(int id, String title, String description, String imagePath, double price) {
+        this.product_id = id;
+        this.title = title;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.price = price;
+    }
+
+    public Product(String title, String description, String imagePath, double price) {
+        this.title = title;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.price = price;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
 
     public String getTitle() {
         return title;

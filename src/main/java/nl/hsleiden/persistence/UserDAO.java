@@ -11,24 +11,13 @@ import nl.hsleiden.model.DatabaseInfo;
 import org.postgresql.util.PSQLException;
 
 @Singleton
-public class UserDAO
-{
-    private final List<User> users;
+public class UserDAO {
 
-    private DatabaseConnection database;
+    private final DatabaseConnection database = new DatabaseConnection();
+    private final List<User> users = new ArrayList<>();
     private ResultSet resultSet = null;
-
-    public UserDAO() {
-        users = new ArrayList<>();
-    }
-
-    public UserDAO(DatabaseConnection database){
-        this.database = database;
-        users = new ArrayList<>();
-    }
     
-    public List<User> getAll()
-    {
+    public List<User> getAll() {
         try{
             String query = "SELECT * FROM " + DatabaseInfo.userTableName;
             PreparedStatement statement = database.getConnection().prepareStatement(query);
@@ -55,8 +44,7 @@ public class UserDAO
         return users;
     }
     
-    public User getByEmail(String email)
-    {
+    public User getUser(String email) {
         User user;
         try{
             try{
@@ -85,8 +73,7 @@ public class UserDAO
         return user;
     }
     
-    public void add(User user)
-    {
+    public void add(User user) {
         try {
             String query = "INSERT INTO " + DatabaseInfo.userTableName + " VALUES(?, ?, ?, ?)";
             PreparedStatement statement = database.getConnection().prepareStatement(query);
@@ -110,21 +97,37 @@ public class UserDAO
             }
         }
     }
-    
-    public void delete(String email)
-    {
-        try{
-            User user = getByEmail(email);
 
-            if(user != null)
+    public void changePassword(User user) {
+        try {
+            if(getUser(user.getEmail()) != null) {
+                String query = "UPDATE " + DatabaseInfo.userTableName + " SET " + DatabaseInfo.userColumnNames.password + " = ? WHERE " + DatabaseInfo.userColumnNames.email + " = ?;";
+                PreparedStatement statement = database.getConnection().prepareStatement(query);
+                statement.setString(1, user.getPassword());
+                statement.setString(2, user.getEmail());
+                statement.execute();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void delete(String email) {
+        try{
+            if(getUser(email) != null)
             {
                 String query = "DELETE FROM " + DatabaseInfo.userTableName + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?";
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setString(1, email);
                 statement.execute();
-            }
-            else {
-                return;
             }
         }catch(SQLException sqle) {
             sqle.printStackTrace();

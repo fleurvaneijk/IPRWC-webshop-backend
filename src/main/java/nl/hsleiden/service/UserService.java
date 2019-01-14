@@ -28,7 +28,7 @@ public class UserService extends BaseService<User>
     
     public User get(String email)
     {
-        return requireResult(dao.getByEmail(email));
+        return requireResult(dao.getUser(email));
     }
     
     public void add(User user)
