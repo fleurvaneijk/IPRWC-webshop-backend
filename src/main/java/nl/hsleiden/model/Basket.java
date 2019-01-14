@@ -22,7 +22,7 @@ public class Basket {
     @JsonView(View.Public.class)
     private int amount;
 
-    public Basket(String userEmail, int product_id, int amount) {
+    public Basket(String userEmail, int productId, int amount) {
         this.userEmail = userEmail;
         this.productId = productId;
         this.amount = amount;

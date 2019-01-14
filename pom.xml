@@ -3,7 +3,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.hsleiden</groupId>
-    <artifactId>workshop-api</artifactId>
+    <artifactId>webshop-api</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     
@@ -16,8 +16,8 @@
         
         <dropwizard.version>1.3.8</dropwizard.version>
         
-        <sonar.projectKey>workshop-api</sonar.projectKey>
-        <sonar.projectName>Workshop API</sonar.projectName>
+        <sonar.projectKey>webshop-api</sonar.projectKey>
+        <sonar.projectName>webshop API</sonar.projectName>
         <sonar.projectVersion>0.1.0</sonar.projectVersion>
         <sonar.java.source>1.8</sonar.java.source>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
@@ -39,6 +39,11 @@
     </properties>
     
     <dependencies>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+        </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>

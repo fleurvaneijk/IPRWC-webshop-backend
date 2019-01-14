@@ -55,19 +55,14 @@ public class UserDAO {
     public User getUser(String email) {
         User user;
         try{
-            try{
-                String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
-                PreparedStatement statement = database.getConnection().prepareStatement(query);
-                statement.setString(1, email);
-                resultSet = statement.executeQuery();
-                resultSet.next();
-                user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
-                        resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
-            }catch(PSQLException e){
-                System.out.println("De gebruiker: " + email + " bestaat niet.");
-                return null;
-            }
-        }catch(SQLException sqle) {
+            String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
+            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
+                    resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+        }catch(Exception sqle) {
             sqle.printStackTrace();
             return null;
         }
@@ -89,13 +84,12 @@ public class UserDAO {
             statement.setString(2, user.getName());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getRole());
-            try{
-                statement.execute();
-            }catch(PSQLException constraintError){
-                System.out.println("Het wachtwoord of de gebruikersnaam is niet lang genoeg.");
-            }
-        }catch(Exception e){
+            statement.executeUpdate();
+        }catch(PSQLException psql){
+            System.out.println("Het wachtwoord of de gebruikersnaam is niet lang genoeg. Of de gebruiker bestaat al.");
+        }catch(SQLException e){
             e.printStackTrace();
+
         }
         finally {
             try{
@@ -113,9 +107,8 @@ public class UserDAO {
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setString(1, user.getPassword());
                 statement.setString(2, user.getEmail());
-                statement.execute();
+                statement.executeUpdate();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -135,7 +128,7 @@ public class UserDAO {
                 String query = "DELETE FROM " + DatabaseInfo.userTableName + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?";
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setString(1, email);
-                statement.execute();
+                statement.executeUpdate();
             }
         }catch(SQLException sqle) {
             sqle.printStackTrace();

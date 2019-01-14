@@ -2,6 +2,8 @@ package nl.hsleiden.persistence;
 
 import nl.hsleiden.model.Basket;
 import nl.hsleiden.model.DatabaseInfo;
+import org.postgresql.util.PSQLException;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,7 +49,7 @@ public class BasketDAO {
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(2, productId);
-            resultSet = statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,12 +69,7 @@ public class BasketDAO {
             statement.setString(1, userEmail);
             statement.setInt(2, productId);
             resultSet = statement.executeQuery();
-            if(resultSet.next()){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,7 +92,7 @@ public class BasketDAO {
             statement.setInt(1, difference);
             statement.setString(2, userEmail);
             statement.setInt(3, productId);
-            resultSet = statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,8 +106,6 @@ public class BasketDAO {
     }
 
     public Basket getItemFromBasket (Basket basket) {
-        ResultSet rs;
-
         try {
 
             String query = "SELECT  * FROM " + DatabaseInfo.basketTableName + " WHERE " + DatabaseInfo.basketColumnNames.userEmail + " = ? AND "
@@ -141,7 +136,7 @@ public class BasketDAO {
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(1, productId);
-            resultSet = statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

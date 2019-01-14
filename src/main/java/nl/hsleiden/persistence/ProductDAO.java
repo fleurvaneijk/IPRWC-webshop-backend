@@ -80,7 +80,7 @@ public class ProductDAO {
             statement.setString(2, product.getDescription());
             statement.setString(3, product.getImagePath());
             statement.setDouble(4, product.getPrice());
-            statement.execute();
+            statement.executeUpdate();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -100,7 +100,7 @@ public class ProductDAO {
                 String query = "DELETE FROM " + DatabaseInfo.productTableName + " WHERE " + DatabaseInfo.productColumnNames.id + " =?;";
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setInt(1, productId);
-                statement.execute();
+                statement.executeUpdate();
             }
         }catch(SQLException sqle) {
             sqle.printStackTrace();
@@ -122,9 +122,8 @@ public class ProductDAO {
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setString(1, title);
                 statement.setInt(2, productId);
-                statement.execute();
+                statement.executeUpdate();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -145,9 +144,8 @@ public class ProductDAO {
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setString(1, description);
                 statement.setInt(2, productId);
-                statement.execute();
+                statement.executeUpdate();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -168,7 +166,7 @@ public class ProductDAO {
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setDouble(1, price);
                 statement.setInt(2, productId);
-                statement.execute();
+                statement.executeUpdate();
             }
 
         } catch (SQLException e) {
@@ -191,9 +189,8 @@ public class ProductDAO {
                 PreparedStatement statement = database.getConnection().prepareStatement(query);
                 statement.setString(1, image);
                 statement.setInt(2, productId);
-                statement.execute();
+                statement.executeUpdate();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

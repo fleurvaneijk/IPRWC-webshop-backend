@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * @author Fleur van Eijk
+ */
 public class User implements Principal
 {
     @NotEmpty

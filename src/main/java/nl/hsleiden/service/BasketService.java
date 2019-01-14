@@ -2,10 +2,12 @@ package nl.hsleiden.service;
 
 import nl.hsleiden.model.Basket;
 import nl.hsleiden.persistence.BasketDAO;
-
 import javax.inject.Inject;
 import java.util.Collection;
 
+/**
+ * @author Fleur van Eijk
+ */
 public class BasketService {
 
     private final BasketDAO dao;
@@ -22,10 +24,9 @@ public class BasketService {
     }
 
     public void addToBasket(Basket basket) {
-        if(dao.checkBasketForProduct(basket.getUserEmail(),basket.getProductId())){
-            dao.changeAmount(1, basket.getUserEmail(), basket.getProductId());
+        if(dao.checkBasketForProduct(basket.getUserEmail(), basket.getProductId()) == true){
+            dao.changeAmount(basket.getAmount(), basket.getUserEmail(), basket.getProductId());
         }else{
-
             dao.addToBasket(basket.getUserEmail(), basket.getProductId());
         }
     }

@@ -6,6 +6,9 @@ import nl.hsleiden.persistence.ProductDAO;
 import javax.inject.Inject;
 import java.util.Collection;
 
+/**
+ * @author Fleur van Eijk
+ */
 public class ProductService extends BaseService{
 
     private final ProductDAO dao;

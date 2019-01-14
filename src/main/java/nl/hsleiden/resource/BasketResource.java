@@ -13,6 +13,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
+/**
+ * @author Fleur van Eijk
+ */
 @Singleton
 @Path("/baskets")
 @Produces(MediaType.APPLICATION_JSON)
@@ -60,6 +63,5 @@ public class BasketResource {
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     public Collection<Basket> getBasket(@PathParam("email") String userEmail){
         return basketService.getBasket(userEmail);
-
     }
 }

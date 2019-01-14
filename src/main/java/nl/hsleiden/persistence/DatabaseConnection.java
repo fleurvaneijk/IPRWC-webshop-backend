@@ -2,6 +2,9 @@ package nl.hsleiden.persistence;
 
 import java.sql.*;
 
+/**
+ * @author Fleur van Eijk
+ */
 public class DatabaseConnection {
 
     // Dit zijn de credentials om toegang te krijgen naar de database
