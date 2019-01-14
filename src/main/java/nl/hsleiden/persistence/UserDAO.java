@@ -58,13 +58,29 @@ public class UserDAO
     
     public User getByEmail(String email)
     {
-        Optional<User> result = users.stream()
-            .filter(user -> user.getEmail().equals(email))
-            .findAny();
-        
-        return result.isPresent()
-            ? result.get()
-            : null;
+        User user;
+        try{
+            String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
+            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+
+            user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
+                    resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+
+        }catch(SQLException sqle) {
+            sqle.printStackTrace();
+            return null;
+        }
+        finally {
+            try{
+                resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return user;
     }
     
     public void add(User user)
