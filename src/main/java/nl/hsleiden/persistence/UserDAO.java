@@ -10,12 +10,20 @@ import nl.hsleiden.model.User;
 import nl.hsleiden.model.DatabaseInfo;
 import org.postgresql.util.PSQLException;
 
+/**
+ * @author Fleur van Eijk
+ */
 @Singleton
 public class UserDAO {
 
-    private final DatabaseConnection database = new DatabaseConnection();
-    private final List<User> users = new ArrayList<>();
+    private final DatabaseConnection database;
+    private final List<User> users;
     private ResultSet resultSet = null;
+
+    public UserDAO(){
+        this.database = new DatabaseConnection();
+        this.users = new ArrayList<>();
+    }
     
     public List<User> getAll() {
         try{

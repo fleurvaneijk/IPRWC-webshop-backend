@@ -8,10 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Fleur van Eijk
+ */
 public class ProductDAO {
-    private final DatabaseConnection database = new DatabaseConnection();
-    ArrayList<Product> products = new ArrayList<>();
+    ArrayList<Product> products;
     private ResultSet resultSet = null;
+
+    private final DatabaseConnection database;
+
+    public ProductDAO(){
+        this.database = new DatabaseConnection();
+        this.products = new ArrayList<>();
+    }
 
     public List<Product> getAll() {
         try {

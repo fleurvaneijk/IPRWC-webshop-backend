@@ -5,6 +5,10 @@ import nl.hsleiden.View;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ *
+ * @author Fleur van Eijk
+ */
 public class Product {
     @JsonView(View.Public.class)
     private int product_id;

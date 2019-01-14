@@ -53,7 +53,7 @@ public class UserResource
     @RolesAllowed("GUEST")
     public User retrieve(@PathParam("email") String email)
     {
-        return service.get(email);
+        return service.getUser(email);
     }
     
     @POST
@@ -70,6 +70,14 @@ public class UserResource
     public void delete(@PathParam("email") String email)
     {
         service.delete(email);
+    }
+
+    @POST
+    @Path("/{user}")
+    @RolesAllowed("ADMIN")
+    public void changePassword(@Valid User user)
+    {
+        service.changePassword(user);
     }
     
     @GET

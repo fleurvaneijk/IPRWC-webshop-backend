@@ -1,5 +1,9 @@
 package nl.hsleiden.model;
 
+/**
+ *
+ * @author Fleur van Eijk
+ */
 public class DatabaseInfo {
 
     public final static String userTableName = "user_account";
@@ -21,14 +25,8 @@ public class DatabaseInfo {
 
     public static final String basketTableName = "basket";
     public class basketColumnNames{
-        public static final String id = "id";
         public static final String userEmail = "user_email";
-    }
-
-    public static final String orderedProductTableName = "ordered_product";
-    public class orderedProductColumnNames{
-        public static final String basketId = "basket_id";
         public static final String productId = "product_id";
-        public static final String price = "price";
+        public static final String amount = "amount";
     }
 }

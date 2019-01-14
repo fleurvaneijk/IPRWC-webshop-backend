@@ -11,8 +11,8 @@ import nl.hsleiden.persistence.UserDAO;
  * @author Peter van Vliet
  */
 @Singleton
-public class UserService extends BaseService<User>
-{
+public class UserService extends BaseService<User> {
+
     private final UserDAO dao;
     
     @Inject
@@ -26,35 +26,26 @@ public class UserService extends BaseService<User>
         return dao.getAll();
     }
     
-    public User get(String email)
+    public User getUser(String email)
     {
         return requireResult(dao.getUser(email));
     }
     
-    public void add(User user)
-    {
+    public void add(User user) {
         user.setRole("GUEST");
-        
         dao.add(user);
     }
     
-    public void update(User authenticator, String email, User user)
-    {
+    public void changePassword(User user) {
         // Controleren of deze gebruiker wel bestaat
-        User oldUser = get(email);
-        
-        if (!authenticator.hasRole("ADMIN"))
-        {
-            // Vaststellen dat de geauthenticeerde gebruiker
-            // zichzelf aan het aanpassen is
-            assertSelf(authenticator, oldUser);
+        if(getUser(user.getEmail()) != null){
+            dao.changePassword(user);
         }
     }
     
-    public void delete(String email)
-    {
+    public void delete(String email) {
         // Controleren of deze gebruiker wel bestaat
-        User user = get(email);
+        User user = getUser(email);
         
         dao.delete(email);
     }
