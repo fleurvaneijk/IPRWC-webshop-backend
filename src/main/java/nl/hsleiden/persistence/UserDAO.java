@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Singleton;
 import nl.hsleiden.model.User;
+import nl.hsleiden.model.DatabaseInfo;
+import org.postgresql.util.PSQLException;
 
-/**
- *
- * @author Peter van Vliet
- */
 @Singleton
 public class UserDAO
 {
@@ -33,13 +31,16 @@ public class UserDAO
     public List<User> getAll()
     {
         try{
-            String query = "SELECT * FROM user_account";
-            PreparedStatement statement = database.connect().prepareStatement(query);
+            String query = "SELECT * FROM " + DatabaseInfo.userTableName;
+            PreparedStatement statement = database.getConnection().prepareStatement(query);
             resultSet = statement.executeQuery();
 
             while(resultSet.next()){
-                User user = new User(resultSet.getString("email"), resultSet.getString("name"),
-                        resultSet.getString("password"), resultSet.getString("role"));
+                User user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
+                        resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+
+                System.out.println(user.getName());
+
                 users.add(user);
             }
         }catch(SQLException sqle){
@@ -55,18 +56,6 @@ public class UserDAO
         return users;
     }
     
-    public User get(int id)
-    {
-        try
-        {
-            return users.get(id);
-        }
-        catch(IndexOutOfBoundsException exception)
-        {
-            return null;
-        }
-    }
-    
     public User getByEmail(String email)
     {
         Optional<User> result = users.stream()
@@ -80,16 +69,55 @@ public class UserDAO
     
     public void add(User user)
     {
-        users.add(user);
+        try {
+            String query = "INSERT INTO " + DatabaseInfo.userTableName + " VALUES(?, ?, ?, ?)";
+            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getRole());
+            // TODO: 12/01/19 Message when name or password is nog long enough
+            try{
+                statement.execute();
+            }catch(PSQLException constraintError){
+                System.out.println("Het wachtwoord is niet lang genoeg.");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
     
-    public void update(int id, User user)
+    public void delete(String email)
     {
-        users.set(id, user);
-    }
-    
-    public void delete(int id)
-    {
-        users.remove(id);
+        try{
+            User user = getByEmail(email);
+
+            if(user != null)
+            {
+                String query = "DELETE FROM " + DatabaseInfo.userTableName + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?";
+                PreparedStatement statement = database.getConnection().prepareStatement(query);
+                statement.setString(1, email);
+                statement.execute();
+            }
+            else {
+                System.out.println("De gebruiker: " + email + " bestaat niet.");
+            }
+        }catch(SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        finally {
+            try{
+                resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

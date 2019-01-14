@@ -71,6 +71,11 @@ public class User implements Principal
     {
         this.role = role;
     }
+
+    public String getRole()
+    {
+        return role;
+    }
     
     public boolean hasRole(String roleName)
     {

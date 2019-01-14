@@ -6,17 +6,14 @@ public class DatabaseConnection {
 
     // Dit zijn de credentials om toegang te krijgen naar de database
     private final String url = "jdbc:postgresql://localhost/webshop";
-    private final String user = "postgres";
-    private final String pass = "postgres";
-    private static Connection conn = null;
+    private final String username = "postgres";
+    private final String password = "postgres";
+    private static Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
 
     //Constructor
     public DatabaseConnection() {
-    }
-
-    public void initializeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -25,24 +22,24 @@ public class DatabaseConnection {
         }
 
         try {
-            conn = DriverManager.getConnection(this.url, this.user, this.pass);
+            connection = DriverManager.getConnection(this.url, this.username, this.password);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (conn != null) {
+        if (connection != null) {
             System.out.println("Database is connected.");
         } else {
             System.out.println("Couldn't connect with the database.");
         }
     }
 
-    public Connection connect() throws SQLException {
-        return DriverManager.getConnection(url, user, pass);
+    public Connection getConnection() throws SQLException {
+        return connection;
     }
 
     private boolean hasConnection(){
-        if (conn != null) {
+        if (connection != null) {
             return true;
         }
         else {
@@ -58,8 +55,8 @@ public class DatabaseConnection {
             if(rs != null){
                 rs.close();
             }
-            if(conn != null){
-                conn.close();
+            if(connection != null){
+                connection.close();
             }
         }catch (SQLException sqlEx)
         {

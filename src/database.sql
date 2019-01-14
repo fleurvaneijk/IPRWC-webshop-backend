@@ -21,7 +21,7 @@ CREATE TABLE basket (
 );
 
 CREATE TABLE ordered_product (
-    basket_id          INTEGER NOT NULL
+    basket_id         INTEGER NOT NULL
     CONSTRAINT basket_id REFERENCES basket(id),
     product_id        INTEGER NOT NULL
     CONSTRAINT product_id REFERENCES product(id),
@@ -29,8 +29,8 @@ CREATE TABLE ordered_product (
 );
 
 
-INSERT INTO user_account(email, name, password, role) VALUES('fleur.vaneijk99@gmail.com', 'Fleur van Eijk', 'wachtwoord', 'guest');
-INSERT INTO user_account(email, name, password, role) VALUES('admin@gmail.com', 'Admin', 'wachtwoord', 'admin');
+INSERT INTO user_account(email, name, password, role) VALUES('fleur.vaneijk99@gmail.com', 'Fleur van Eijk', 'wachtwoord', 'GUEST');
+INSERT INTO user_account(email, name, password, role) VALUES('admin@gmail.com', 'Admin', 'wachtwoord', 'ADMIN');
 
 
 INSERT INTO product(title, description, image, price) VALUES('Lampionmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'C:\Users\Fleur van Eijk\IdeaProjects\IPRWC-webshop-frontend\src\assets\lampion_mand.jpg', '20.00');

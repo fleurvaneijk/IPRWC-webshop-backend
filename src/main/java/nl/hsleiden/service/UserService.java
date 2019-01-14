@@ -26,9 +26,9 @@ public class UserService extends BaseService<User>
         return dao.getAll();
     }
     
-    public User get(int id)
+    public User get(String email)
     {
-        return requireResult(dao.get(id));
+        return requireResult(dao.getByEmail(email));
     }
     
     public void add(User user)
@@ -38,10 +38,10 @@ public class UserService extends BaseService<User>
         dao.add(user);
     }
     
-    public void update(User authenticator, int id, User user)
+    public void update(User authenticator, String email, User user)
     {
         // Controleren of deze gebruiker wel bestaat
-        User oldUser = get(id);
+        User oldUser = get(email);
         
         if (!authenticator.hasRole("ADMIN"))
         {
@@ -49,15 +49,13 @@ public class UserService extends BaseService<User>
             // zichzelf aan het aanpassen is
             assertSelf(authenticator, oldUser);
         }
-        
-        dao.update(id, user);
     }
     
-    public void delete(int id)
+    public void delete(String email)
     {
         // Controleren of deze gebruiker wel bestaat
-        User user = get(id);
+        User user = get(email);
         
-        dao.delete(id);
+        dao.delete(email);
     }
 }
