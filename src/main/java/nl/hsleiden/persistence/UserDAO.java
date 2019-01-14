@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.inject.Singleton;
 import nl.hsleiden.model.User;
 import nl.hsleiden.model.DatabaseInfo;
@@ -60,15 +59,18 @@ public class UserDAO
     {
         User user;
         try{
-            String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
-            PreparedStatement statement = database.getConnection().prepareStatement(query);
-            statement.setString(1, email);
-            resultSet = statement.executeQuery();
-            resultSet.next();
-
-            user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
-                    resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
-
+            try{
+                String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
+                PreparedStatement statement = database.getConnection().prepareStatement(query);
+                statement.setString(1, email);
+                resultSet = statement.executeQuery();
+                resultSet.next();
+                user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
+                        resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+            }catch(PSQLException e){
+                System.out.println("De gebruiker: " + email + " bestaat niet.");
+                return null;
+            }
         }catch(SQLException sqle) {
             sqle.printStackTrace();
             return null;
@@ -92,11 +94,10 @@ public class UserDAO
             statement.setString(2, user.getName());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getRole());
-            // TODO: 12/01/19 Message when name or password is nog long enough
             try{
                 statement.execute();
             }catch(PSQLException constraintError){
-                System.out.println("Het wachtwoord is niet lang genoeg.");
+                System.out.println("Het wachtwoord of de gebruikersnaam is niet lang genoeg.");
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -123,7 +124,7 @@ public class UserDAO
                 statement.execute();
             }
             else {
-                System.out.println("De gebruiker: " + email + " bestaat niet.");
+                return;
             }
         }catch(SQLException sqle) {
             sqle.printStackTrace();

@@ -8,13 +8,13 @@ public class main {
     public static void main(String[] args) {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         UserDAO userdao = new UserDAO(databaseConnection);
-//        userdao.getAll();
+        userdao.getAll();
 
 //        userdao.add(new User("test@test.nl", "test", "wachtwoord", "GUEST"));
-//        userdao.delete("test@test.nl");
-        userdao.getByEmail("fleur.vaneijk99@gmail.com");
+        userdao.delete("test@test.nl");
+//        userdao.getByEmail("admin@gmail.com");
 
-//        userdao.getAll();
+        userdao.getAll();
 
     }
 }
