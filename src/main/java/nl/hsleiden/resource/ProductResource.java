@@ -33,7 +33,7 @@ public class ProductResource {
 
     @GET
     @JsonView(View.Public.class)
-    @RolesAllowed("GUEST")
+//    @RolesAllowed("GUEST")
     public Collection<Product> retrieveAll()
     {
         return service.getAll();

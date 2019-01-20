@@ -30,9 +30,14 @@ INSERT INTO user_account(email, name, password, role) VALUES('fleur.vaneijk99@gm
 INSERT INTO user_account(email, name, password, role) VALUES('admin@gmail.com', 'Admin', 'wachtwoord', 'ADMIN');
 
 
-INSERT INTO product(title, description, image, price) VALUES('Lampionmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'C:\Users\Fleur van Eijk\IdeaProjects\IPRWC-webshop-frontend\src\assets\lampion_mand.jpg', '20.00');
-INSERT INTO product(title, description, image, price) VALUES('Fruitmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'C:\Users\Fleur van Eijk\IdeaProjects\IPRWC-webshop-frontend\src\assets\fruitmand.jpg', '15.00');
-INSERT INTO product(title, description, image, price) VALUES('Grote mand', 'Handgeweven mand uit Bolgatanga, Ghana', 'C:\Users\Fleur van Eijk\IdeaProjects\IPRWC-webshop-frontend\src\assets\grote_mand.jpg', '40.00');
+INSERT INTO product(title, description, image, price) VALUES('Lampionmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'assets/lampion_mand.jpg', '20.00');
+INSERT INTO product(title, description, image, price) VALUES('Fruitmand', 'Handgeweven mand uit Bolgatanga, Ghana', 'assets/fruitmand.jpg', '15.00');
+INSERT INTO product(title, description, image, price) VALUES('Grote mand', 'Handgeweven mand uit Bolgatanga, Ghana', 'assets/grote_mand.jpg', '40.00');
+INSERT INTO product(title, description, image, price) VALUES('Boodschappen mand', 'Handgeweven mand uit Bolgatanga, Ghana', 'assets/boodschappen_mand.jpg', '30.00');
+INSERT INTO product(title, description, image, price) VALUES('Kleine mand', 'Handgeweven mand uit Bolgatanga, Ghana', 'assets/kleine_mand.jpg', '30.00');
+INSERT INTO product(title, description, image, price) VALUES('Schaal mand', 'Handgeweven mand uit Bolgatanga, Ghana', 'assets/schaal_mand.jpg', '30.00');
+
+
 
 INSERT INTO basket VALUES('fleur.vaneijk99@gmail.com', '1', '2');
 INSERT INTO basket VALUES('fleur.vaneijk99@gmail.com', '2', '5');

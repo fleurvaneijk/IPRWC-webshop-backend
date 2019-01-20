@@ -14,18 +14,15 @@ public class ProductService extends BaseService{
     private final ProductDAO dao;
 
     @Inject
-    public ProductService(ProductDAO dao)
-    {
+    public ProductService(ProductDAO dao) {
         this.dao = dao;
     }
 
-    public Collection<Product> getAll()
-    {
+    public Collection<Product> getAll() {
         return dao.getAll();
     }
 
-    public Product getProduct(int productId)
-    {
+    public Product getProduct(int productId) {
         return (Product) requireResult(dao.getProduct(productId));
     }
 
