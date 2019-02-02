@@ -39,15 +39,6 @@ public class CartResource {
     }
 
     @POST
-    @Path("/getItemFromCart")
-    @JsonView(View.Public.class)
-    @RolesAllowed({"'ADMIN'", "'GUEST'"})
-    @Consumes(MediaType.APPLICATION_JSON)
-    public CartItem getItemFromCart(@Valid CartItem cartItem) {
-        return cartService.getItemFromCart(cartItem);
-    }
-
-    @POST
     @Path("/deleteProductFromCart")
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})

@@ -42,8 +42,7 @@ public class UserResource
     @GET
     @JsonView(View.Public.class)
     @RolesAllowed("GUEST")
-    public Collection<User> retrieveAll()
-    {
+    public Collection<User> retrieveAll() {
         return service.getAll();
     }
     
@@ -59,8 +58,8 @@ public class UserResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @JsonView(View.Protected.class)
-    public void create(@Valid User user)
-    {
+    public void create(@Valid User user) {
+        System.out.println("YOOOOOOOYOOOOOOOOOOOOOOO");
         service.add(user);
     }
     
@@ -72,7 +71,7 @@ public class UserResource
         service.delete(email);
     }
 
-    @POST
+    @PUT
     @Path("/{user}")
     @RolesAllowed("ADMIN")
     public void changePassword(@Valid User user)

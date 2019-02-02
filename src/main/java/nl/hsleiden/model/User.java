@@ -1,5 +1,6 @@
 package nl.hsleiden.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
 import nl.hsleiden.View;
@@ -14,19 +15,23 @@ public class User implements Principal
 {
     @NotEmpty
     @Email
+    @JsonProperty
     @JsonView(View.Public.class)
     private String email;
 
     @NotEmpty
+    @JsonProperty
     @Length(min = 3, max = 100)
     @JsonView(View.Public.class)
     private String name;
 
     @NotEmpty
+    @JsonProperty
     @Length(min = 8)
     @JsonView(View.Protected.class)
     private String password;
-    
+
+    @JsonProperty
     @JsonView(View.Private.class)
     private String role;
 

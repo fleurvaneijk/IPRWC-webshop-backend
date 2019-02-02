@@ -9,6 +9,7 @@ import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
+import io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import java.util.EnumSet;
@@ -58,6 +59,9 @@ public class ApiApplication extends Application<ApiConfiguration>
         name = configuration.getApiName();
         
         logger.info(String.format("Set API name to %s", name));
+
+        // Enable more JSON processing details
+        environment.jersey().register(new JsonProcessingExceptionMapper(true));
         
         setupAuthentication(environment);
         configureClientFilter(environment);
