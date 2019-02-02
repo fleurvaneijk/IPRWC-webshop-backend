@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Fleur van Eijk
  */
-public class Basket {
+public class Cart {
 
     @NotEmpty
     @JsonView(View.Public.class)
@@ -22,7 +22,7 @@ public class Basket {
     @JsonView(View.Public.class)
     private int amount;
 
-    public Basket(String userEmail, int productId, int amount) {
+    public Cart(String userEmail, int productId, int amount) {
         this.userEmail = userEmail;
         this.productId = productId;
         this.amount = amount;

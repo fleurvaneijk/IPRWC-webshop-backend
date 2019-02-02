@@ -1,12 +1,12 @@
 package nl.hsleiden;
 
-import nl.hsleiden.model.Basket;
+import nl.hsleiden.model.Cart;
 import nl.hsleiden.model.Product;
 import nl.hsleiden.model.User;
-import nl.hsleiden.persistence.BasketDAO;
+import nl.hsleiden.persistence.CartDAO;
 import nl.hsleiden.persistence.ProductDAO;
 import nl.hsleiden.persistence.UserDAO;
-import nl.hsleiden.service.BasketService;
+import nl.hsleiden.service.CartService;
 
 public class main {
     public static void main(String[] args) {
@@ -23,11 +23,11 @@ public class main {
 //        System.out.println("\n");
 //        productDAO.getAll();
 //
-//        BasketDAO basket = new BasketDAO();
-//        basket.getBasket(1);
+//        CartDAO cart = new CartDAO();
+//        cart.getCart(1);
 //
-//        BasketService bs = new BasketService(basket);
-//        bs.addToBasket(new Basket("fleur.vaneijk99@gmail.com", 2, 3));
+//        CartService bs = new CartService(cart);
+//        bs.addToCart(new Cart("fleur.vaneijk99@gmail.com", 2, 3));
 
 
 

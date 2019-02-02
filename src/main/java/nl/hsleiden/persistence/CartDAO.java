@@ -1,6 +1,6 @@
 package nl.hsleiden.persistence;
 
-import nl.hsleiden.model.Basket;
+import nl.hsleiden.model.Cart;
 import nl.hsleiden.model.DatabaseInfo;
 import org.postgresql.util.PSQLException;
 
@@ -14,38 +14,38 @@ import java.util.List;
  *
  * @author Fleur van Eijk
  */
-public class BasketDAO {
+public class CartDAO {
     private final DatabaseConnection database;
-    private List<Basket> baskets;
+    private List<Cart> carts;
     private ResultSet resultSet = null;
 
-    public BasketDAO(){
+    public CartDAO(){
         this.database = new DatabaseConnection();
-        this.baskets = new ArrayList<>();
+        this.carts = new ArrayList<>();
     }
 
-    public List<Basket> getBasket(String userEmail) {
+    public List<Cart> getCart(String userEmail) {
         try {
-            String query = "SELECT " + DatabaseInfo.basketColumnNames.productId + ", " + DatabaseInfo.basketColumnNames.amount +
-                    " FROM " + DatabaseInfo.basketTableName + " WHERE " + DatabaseInfo.basketColumnNames.userEmail + " = ?";
+            String query = "SELECT " + DatabaseInfo.cartColumnNames.productId + ", " + DatabaseInfo.cartColumnNames.amount +
+                    " FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ?";
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
-                Basket basket = new Basket(userEmail, resultSet.getInt(DatabaseInfo.basketColumnNames.productId),
-                        resultSet.getInt(DatabaseInfo.basketColumnNames.amount));
-                baskets.add(basket);
+                Cart cart = new Cart(userEmail, resultSet.getInt(DatabaseInfo.cartColumnNames.productId),
+                        resultSet.getInt(DatabaseInfo.cartColumnNames.amount));
+                carts.add(cart);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return baskets;
+        return carts;
     }
 
-    public void addToBasket(String userEmail, int productId) {
+    public void addToCart(String userEmail, int productId) {
         try {
-            String query = "INSERT INTO " + DatabaseInfo.basketTableName + " VALUES (?,?,1)";
+            String query = "INSERT INTO " + DatabaseInfo.cartTableName + " VALUES (?,?,1)";
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(2, productId);
@@ -62,9 +62,9 @@ public class BasketDAO {
         }
     }
 
-    public Boolean checkBasketForProduct(String userEmail, int productId){
+    public Boolean checkCartForProduct(String userEmail, int productId){
         try {
-            String query = "SELECT * FROM " + DatabaseInfo.basketTableName + " WHERE " + DatabaseInfo.basketColumnNames.userEmail + " = ? AND " + DatabaseInfo.basketColumnNames.productId + " = ?;";
+            String query = "SELECT * FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ? AND " + DatabaseInfo.cartColumnNames.productId + " = ?;";
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(2, productId);
@@ -85,8 +85,8 @@ public class BasketDAO {
 
     public void changeAmount(int difference, String userEmail, int productId){
         try {
-            String query = "UPDATE " + DatabaseInfo.basketTableName + " SET " + DatabaseInfo.basketColumnNames.amount + " = " + DatabaseInfo.basketColumnNames.amount + " + ?" + " WHERE " +
-                    DatabaseInfo.basketColumnNames.userEmail + " = ? AND " + DatabaseInfo.basketColumnNames.productId + " = ?;";
+            String query = "UPDATE " + DatabaseInfo.cartTableName + " SET " + DatabaseInfo.cartColumnNames.amount + " = " + DatabaseInfo.cartColumnNames.amount + " + ?" + " WHERE " +
+                    DatabaseInfo.cartColumnNames.userEmail + " = ? AND " + DatabaseInfo.cartColumnNames.productId + " = ?;";
 
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setInt(1, difference);
@@ -105,18 +105,18 @@ public class BasketDAO {
         }
     }
 
-    public Basket getItemFromBasket (Basket basket) {
+    public Cart getItemFromCart (Cart cart) {
         try {
 
-            String query = "SELECT  * FROM " + DatabaseInfo.basketTableName + " WHERE " + DatabaseInfo.basketColumnNames.userEmail + " = ? AND "
-                    + DatabaseInfo.basketColumnNames.productId + " =?;";
+            String query = "SELECT  * FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ? AND "
+                    + DatabaseInfo.cartColumnNames.productId + " =?;";
             PreparedStatement statement = database.getConnection().prepareStatement(query);
-            statement.setString(1, basket.getUserEmail());
-            statement.setInt(2, basket.getProductId());
+            statement.setString(1, cart.getUserEmail());
+            statement.setInt(2, cart.getProductId());
             resultSet = statement.executeQuery();
             resultSet.next();
-            return new Basket(resultSet.getString(DatabaseInfo.basketColumnNames.userEmail), resultSet.getInt(DatabaseInfo.basketColumnNames.productId),
-                                resultSet.getInt(DatabaseInfo.basketColumnNames.amount));
+            return new Cart(resultSet.getString(DatabaseInfo.cartColumnNames.userEmail), resultSet.getInt(DatabaseInfo.cartColumnNames.productId),
+                                resultSet.getInt(DatabaseInfo.cartColumnNames.amount));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -130,9 +130,9 @@ public class BasketDAO {
         return null;
     }
 
-    public void deleteFromBasket(String userEmail, int productId) {
+    public void deleteFromCart(String userEmail, int productId) {
         try {
-            String query = "DELETE FROM " + DatabaseInfo.basketTableName + " WHERE " + DatabaseInfo.basketColumnNames.userEmail + " = ? AND " + DatabaseInfo.basketColumnNames.productId + " = ?;";
+            String query = "DELETE FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ? AND " + DatabaseInfo.cartColumnNames.productId + " = ?;";
             PreparedStatement statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(1, productId);

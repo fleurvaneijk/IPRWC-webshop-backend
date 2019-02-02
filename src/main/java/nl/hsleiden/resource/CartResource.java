@@ -3,8 +3,8 @@ package nl.hsleiden.resource;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.inject.Singleton;
 import nl.hsleiden.View;
-import nl.hsleiden.model.Basket;
-import nl.hsleiden.service.BasketService;
+import nl.hsleiden.model.Cart;
+import nl.hsleiden.service.CartService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -17,43 +17,43 @@ import java.util.Collection;
  * @author Fleur van Eijk
  */
 @Singleton
-@Path("/baskets")
+@Path("/carts")
 @Produces(MediaType.APPLICATION_JSON)
-public class BasketResource {
+public class CartResource {
 
-    BasketService basketService;
+    CartService cartService;
 
     @Inject
-    public BasketResource(BasketService basketService){
-        this.basketService = basketService;
+    public CartResource(CartService cartService){
+        this.cartService = cartService;
     }
 
     @POST
-    @Path("/addProductToBasket")
+    @Path("/addProductToCart")
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addToBasket(@Valid Basket basket){
-        basketService.addToBasket(basket);
+    public void addToCart(@Valid Cart cart){
+        cartService.addToCart(cart);
 
     }
 
     @POST
-    @Path("/getItemFromBasket")
+    @Path("/getItemFromCart")
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     @Consumes(MediaType.APPLICATION_JSON)
-    public Basket getItemFromBasket(@Valid Basket basket) {
-        return basketService.getItemFromBasket(basket);
+    public Cart getItemFromCart(@Valid Cart cart) {
+        return cartService.getItemFromCart(cart);
     }
 
     @POST
-    @Path("/deleteProductFromBasket")
+    @Path("/deleteProductFromCart")
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteFromBasket(@Valid Basket basket){
-        basketService.deleteFromBasket(basket);
+    public void deleteFromCart(@Valid Cart cart){
+        cartService.deleteFromCart(cart);
 
     }
 
@@ -61,7 +61,7 @@ public class BasketResource {
     @Path("/{email}")
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
-    public Collection<Basket> getBasket(@PathParam("email") String userEmail){
-        return basketService.getBasket(userEmail);
+    public Collection<Cart> getCart(@PathParam("email") String userEmail){
+        return cartService.getCart(userEmail);
     }
 }

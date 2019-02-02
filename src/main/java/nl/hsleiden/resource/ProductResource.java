@@ -40,9 +40,9 @@ public class ProductResource {
     }
 
     @GET
-    @Path("/retrieve{productId}")
+    @Path("/{productId}")
     @JsonView(View.Public.class)
-    @RolesAllowed("GUEST")
+//    @RolesAllowed("GUEST")
     public Product retrieve(@PathParam("productId") int productId)
     {
         return service.getProduct(productId);
@@ -57,7 +57,7 @@ public class ProductResource {
     }
 
     @DELETE
-    @Path("/delete{productId}")
+    @Path("/delete/{productId}")
     @RolesAllowed("ADMIN")
     public void delete(@PathParam("productId") int productId)
     {
@@ -65,28 +65,28 @@ public class ProductResource {
     }
 
     @POST
-    @Path("/changeTitle{productId}")
+    @Path("/changeTitle/{productId}")
     @RolesAllowed("ADMIN")
     public void changeTitle(@PathParam("productId") int productId, String title) {
         service.changeTitle(productId, title);
     }
 
     @POST
-    @Path("/changeDescription{productId}")
+    @Path("/changeDescription/{productId}")
     @RolesAllowed("ADMIN")
     public void changeDescription(@PathParam("productId") int productId, String description) {
         service.changeTitle(productId, description);
     }
 
     @POST
-    @Path("/changeImage{productId}")
+    @Path("/changeImage/{productId}")
     @RolesAllowed("ADMIN")
     public void changeImage(@PathParam("productId") int productId, String image) {
         service.changeTitle(productId, image);
     }
 
     @POST
-    @Path("/changePrice{productId}")
+    @Path("/changePrice/{productId}")
     @RolesAllowed("ADMIN")
     public void changePrice(@PathParam("productId") int productId, String price) {
         service.changeTitle(productId, price);
