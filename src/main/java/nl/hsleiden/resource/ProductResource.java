@@ -46,42 +46,41 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @JsonView(View.Protected.class)
     public void create(Product product) {
-        System.out.println("YOOOOO");
         service.add(product);
     }
-//
-//    @DELETE
-//    @Path("/delete/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void delete(@PathParam("productId") int productId) {
-//        service.delete(productId);
-//    }
-//
-//    @POST
-//    @Path("/changeTitle/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changeTitle(@PathParam("productId") int productId, String title) {
-//        service.changeTitle(productId, title);
-//    }
-//
-//    @POST
-//    @Path("/changeDescription/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changeDescription(@PathParam("productId") int productId, String description) {
-//        service.changeTitle(productId, description);
-//    }
-//
-//    @POST
-//    @Path("/changeImage/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changeImage(@PathParam("productId") int productId, String image) {
-//        service.changeTitle(productId, image);
-//    }
-//
-//    @POST
-//    @Path("/changePrice/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changePrice(@PathParam("productId") int productId, String price) {
-//        service.changeTitle(productId, price);
-//    }
+
+    @DELETE
+    @Path("/delete/{productId}")
+    @RolesAllowed("ADMIN")
+    public void delete(@PathParam("productId") int productId) {
+        service.delete(productId);
+    }
+
+    @PUT
+    @Path("/changeTitle/{productId}")
+    @RolesAllowed("ADMIN")
+    public void changeTitle(@PathParam("productId") int productId, String title) {
+        service.changeTitle(productId, title);
+    }
+
+    @PUT
+    @Path("/changeDescription/{productId}")
+    @RolesAllowed("ADMIN")
+    public void changeDescription(@PathParam("productId") int productId, String description) {
+        service.changeTitle(productId, description);
+    }
+
+    @PUT
+    @Path("/changeImage/{productId}")
+    @RolesAllowed("ADMIN")
+    public void changeImage(@PathParam("productId") int productId, String image) {
+        service.changeTitle(productId, image);
+    }
+
+    @PUT
+    @Path("/changePrice/{productId}")
+    @RolesAllowed("ADMIN")
+    public void changePrice(@PathParam("productId") int productId, String price) {
+        service.changeTitle(productId, price);
+    }
 }

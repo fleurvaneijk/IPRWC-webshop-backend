@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * DAO that gets data from the product table
+ * DAO that gets data from, and writes to the product table
  * @author Fleur van Eijk
  */
 @Singleton

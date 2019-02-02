@@ -1,10 +1,12 @@
 package nl.hsleiden.persistence;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Singleton;
 
 import nl.hsleiden.DatabaseConnection;
@@ -28,9 +30,13 @@ public class UserDAO {
     }
     
     public List<User> getAll() {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
         try{
+            connection = database.getConnection();
             String query = "SELECT * FROM " + DatabaseInfo.userTableName;
-            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
 
             while(resultSet.next()){
@@ -46,7 +52,9 @@ public class UserDAO {
         }
         finally {
             try{
-                resultSet.close();
+                Objects.requireNonNull(statement).close();
+                Objects.requireNonNull(resultSet).close();
+                connection.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -56,9 +64,13 @@ public class UserDAO {
     
     public User getUser(String email) {
         User user;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
         try{
+            connection = database.getConnection();
             String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
-            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement = connection.prepareStatement(query);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
             resultSet.next();
@@ -70,7 +82,9 @@ public class UserDAO {
         }
         finally {
             try{
-                resultSet.close();
+                Objects.requireNonNull(statement).close();
+                Objects.requireNonNull(resultSet).close();
+                connection.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -79,9 +93,12 @@ public class UserDAO {
     }
     
     public void add(User user) {
+        PreparedStatement statement = null;
+        Connection connection = null;
         try {
+            connection = database.getConnection();
             String query = "INSERT INTO " + DatabaseInfo.userTableName + " VALUES(?, ?, ?, ?)";
-            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement = connection.prepareStatement(query);
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getName());
             statement.setString(3, user.getPassword());
@@ -95,7 +112,8 @@ public class UserDAO {
         }
         finally {
             try{
-                resultSet.close();
+                Objects.requireNonNull(statement).close();
+                connection.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -103,10 +121,14 @@ public class UserDAO {
     }
 
     public void changePassword(User user) {
+        PreparedStatement statement = null;
+        Connection connection = null;
         try {
+            connection = database.getConnection();
             if(getUser(user.getEmail()) != null) {
-                String query = "UPDATE " + DatabaseInfo.userTableName + " SET " + DatabaseInfo.userColumnNames.password + " = ? WHERE " + DatabaseInfo.userColumnNames.email + " = ?;";
-                PreparedStatement statement = database.getConnection().prepareStatement(query);
+                String query = "UPDATE " + DatabaseInfo.userTableName + " SET " + DatabaseInfo.userColumnNames.password + " = ? " +
+                                "WHERE " + DatabaseInfo.userColumnNames.email + " = ?;";
+                statement = connection.prepareStatement(query);
                 statement.setString(1, user.getPassword());
                 statement.setString(2, user.getEmail());
                 statement.executeUpdate();
@@ -116,7 +138,8 @@ public class UserDAO {
         }
         finally {
             try{
-                resultSet.close();
+                Objects.requireNonNull(statement).close();
+                connection.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -124,11 +147,14 @@ public class UserDAO {
     }
     
     public void delete(String email) {
-        try{
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
             if(getUser(email) != null)
             {
                 String query = "DELETE FROM " + DatabaseInfo.userTableName + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?";
-                PreparedStatement statement = database.getConnection().prepareStatement(query);
+                statement = connection.prepareStatement(query);
                 statement.setString(1, email);
                 statement.executeUpdate();
             }
@@ -137,7 +163,8 @@ public class UserDAO {
         }
         finally {
             try{
-                resultSet.close();
+                Objects.requireNonNull(statement).close();
+                connection.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
