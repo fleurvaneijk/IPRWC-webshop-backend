@@ -2,12 +2,9 @@ package nl.hsleiden.resource;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.inject.Singleton;
-import io.dropwizard.auth.Auth;
 import nl.hsleiden.View;
 import nl.hsleiden.model.Product;
-import nl.hsleiden.model.User;
 import nl.hsleiden.service.ProductService;
-
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -33,34 +30,30 @@ public class ProductResource {
 
     @GET
     @JsonView(View.Public.class)
-//    @RolesAllowed("GUEST")
     public Collection<Product> retrieveAll()
     {
         return service.getAll();
     }
 
-//    @GET
-//    @Path("/{productId}")
-//    @JsonView(View.Public.class)
-////    @RolesAllowed("GUEST")
-//    public Product retrieve(@PathParam("productId") int productId)
-//    {
-//        return service.getProduct(productId);
-//    }
-//
+    @GET
+    @Path("/{productId}")
+    @JsonView(View.Public.class)
+    public Product retrieve(@PathParam("productId") int productId) {
+        System.out.println("YOOOOO");
+        return service.getProduct(productId);
+    }
+
 //    @POST
 //    @Consumes(MediaType.APPLICATION_JSON)
 //    @JsonView(View.Protected.class)
-//    public void create(@Valid Product product)
-//    {
+//    public void create(@Valid Product product) {
 //        service.add(product);
 //    }
 //
 //    @DELETE
 //    @Path("/delete/{productId}")
 //    @RolesAllowed("ADMIN")
-//    public void delete(@PathParam("productId") int productId)
-//    {
+//    public void delete(@PathParam("productId") int productId) {
 //        service.delete(productId);
 //    }
 //
@@ -90,13 +83,5 @@ public class ProductResource {
 //    @RolesAllowed("ADMIN")
 //    public void changePrice(@PathParam("productId") int productId, String price) {
 //        service.changeTitle(productId, price);
-//    }
-//
-//    @GET
-//    @Path("/me")
-//    @JsonView(View.Private.class)
-//    public User authenticate(@Auth User authenticator)
-//    {
-//        return authenticator;
 //    }
 }

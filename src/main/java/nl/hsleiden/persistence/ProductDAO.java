@@ -1,20 +1,22 @@
 package nl.hsleiden.persistence;
 
 import nl.hsleiden.model.DatabaseInfo;
-import nl.hsleiden.model.Image;
 import nl.hsleiden.model.Product;
 
+import javax.inject.Singleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- *
+ * DAO that gets data from the product table
  * @author Fleur van Eijk
  */
+@Singleton
 public class ProductDAO {
     ArrayList<Product> products;
 
@@ -64,41 +66,57 @@ public class ProductDAO {
                 statement2.close();
                 resultSet1.close();
                 resultSet2.close();
-                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return products;
     }
-//
-//    public Product getProduct(int productId) {
-//        Product product = null;
-//        try{
-//            String query = "SELECT * FROM " + DatabaseInfo.productTableName + " WHERE  " + DatabaseInfo.productColumnNames.id + " = ?";
-//            PreparedStatement statement = database.getConnection().prepareStatement(query);
-//            statement.setInt(1, productId);
-//            resultSet = statement.executeQuery();
-//
-//            while(resultSet.next()){
-//                product = new Product(resultSet.getInt(DatabaseInfo.productColumnNames.id), resultSet.getString(DatabaseInfo.productColumnNames.title),
-//                        resultSet.getString(DatabaseInfo.productColumnNames.description), resultSet.getString(DatabaseInfo.productColumnNames.image),
-//                        resultSet.getDouble(DatabaseInfo.productColumnNames.price));
-//            }
-//            return product;
-//        }catch(SQLException sqle) {
-//            sqle.printStackTrace();
-//            return null;
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
+
+    public Product getProduct(int productId) {
+        Product product = null;
+        PreparedStatement statement1 = null;
+        PreparedStatement statement2 = null;
+        ResultSet resultSet1 = null;
+        ResultSet resultSet2 = null;
+        Connection connection = null;
+        try{
+            connection = database.getConnection();
+            String query = "SELECT * FROM " + DatabaseInfo.productTableName + " WHERE  " + DatabaseInfo.productColumnNames.id + " = ?";
+            statement1 = connection.prepareStatement(query);
+            statement1.setInt(1, productId);
+            resultSet1 = statement1.executeQuery();
+            resultSet1.next();
+
+            String query2 = "SELECT "+ DatabaseInfo.imageColumnNames.image + " FROM " + DatabaseInfo.imageTableName + " WHERE product_id = " + resultSet1.getInt(DatabaseInfo.productColumnNames.id);
+            statement2 = connection.prepareStatement(query2);
+            resultSet2 = statement2.executeQuery();
+
+            ArrayList<String> images = new ArrayList<String>();
+
+            while(resultSet2.next()){
+                String image = resultSet2.getString(DatabaseInfo.imageColumnNames.image);
+                images.add(image);
+            }
+            product = new Product(resultSet1.getInt(DatabaseInfo.productColumnNames.id), resultSet1.getString(DatabaseInfo.productColumnNames.title),
+                    resultSet1.getString(DatabaseInfo.productColumnNames.description), images, resultSet1.getDouble(DatabaseInfo.productColumnNames.price));
+            return product;
+        }catch(SQLException sqle) {
+            sqle.printStackTrace();
+            return null;
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement1).close();
+                Objects.requireNonNull(statement2).close();
+                resultSet1.close();
+                Objects.requireNonNull(resultSet2).close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 //    public void add(Product product) {
 //        try {
 //            String query = "INSERT INTO " + DatabaseInfo.productTableName + "(" + DatabaseInfo.productColumnNames.title + "," + DatabaseInfo.productColumnNames.description

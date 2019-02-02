@@ -4,11 +4,13 @@ import nl.hsleiden.model.Product;
 import nl.hsleiden.persistence.ProductDAO;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 
 /**
  * @author Fleur van Eijk
  */
+@Singleton
 public class ProductService extends BaseService{
 
     private final ProductDAO dao;
@@ -22,10 +24,10 @@ public class ProductService extends BaseService{
         return dao.getAll();
     }
 
-//    public Product getProduct(int productId) {
-//        return (Product) requireResult(dao.getProduct(productId));
-//    }
-//
+    public Product getProduct(int productId) {
+        return (Product) requireResult(dao.getProduct(productId));
+    }
+
 //    public void add(Product product) {
 //        dao.add(product);
 //    }
