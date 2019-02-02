@@ -1,5 +1,6 @@
 package nl.hsleiden.persistence;
 
+import nl.hsleiden.DatabaseConnection;
 import nl.hsleiden.model.DatabaseInfo;
 import nl.hsleiden.model.Product;
 
@@ -33,6 +34,7 @@ public class ProductDAO {
         ResultSet resultSet1 = null;
         ResultSet resultSet2 = null;
         Connection connection = null;
+        products.clear();
         try {
             connection = database.getConnection();
             String query1 = "SELECT * FROM " + DatabaseInfo.productTableName;
@@ -62,14 +64,16 @@ public class ProductDAO {
         }
         finally {
             try {
-                statement1.close();
-                statement2.close();
-                resultSet1.close();
-                resultSet2.close();
+                Objects.requireNonNull(statement1).close();
+                Objects.requireNonNull(statement2).close();
+                Objects.requireNonNull(resultSet1).close();
+                Objects.requireNonNull(resultSet2).close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println(products);
         return products;
     }
 
@@ -109,143 +113,174 @@ public class ProductDAO {
             try{
                 Objects.requireNonNull(statement1).close();
                 Objects.requireNonNull(statement2).close();
-                resultSet1.close();
+                Objects.requireNonNull(resultSet1).close();
                 Objects.requireNonNull(resultSet2).close();
+                connection.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
         }
     }
 
-//    public void add(Product product) {
-//        try {
-//            String query = "INSERT INTO " + DatabaseInfo.productTableName + "(" + DatabaseInfo.productColumnNames.title + "," + DatabaseInfo.productColumnNames.description
-//                            + "," + DatabaseInfo.productColumnNames.image + "," + DatabaseInfo.productColumnNames.price +") VALUES(?, ?, ?, ?)";
-//            PreparedStatement statement = database.getConnection().prepareStatement(query);
-//            statement.setString(1, product.getTitle());
-//            statement.setString(2, product.getDescription());
-//            statement.setString(3, product.getImagePath());
-//            statement.setDouble(4, product.getPrice());
-//            statement.executeUpdate();
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void delete(int productId) {
-//        try{
-//            if(getProduct(productId) != null)
-//            {
-//                String query = "DELETE FROM " + DatabaseInfo.productTableName + " WHERE " + DatabaseInfo.productColumnNames.id + " =?;";
-//                PreparedStatement statement = database.getConnection().prepareStatement(query);
-//                statement.setInt(1, productId);
-//                statement.executeUpdate();
-//            }
-//        }catch(SQLException sqle) {
-//            sqle.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changeTitle(int productId, String title) {
-//        try {
-//            if(getProduct(productId) != null)
-//            {
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.title + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
-//                PreparedStatement statement = database.getConnection().prepareStatement(query);
-//                statement.setString(1, title);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changeDescription(int productId, String description) {
-//        try {
-//            if(getProduct(productId) != null)
-//            {
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.description + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
-//                PreparedStatement statement = database.getConnection().prepareStatement(query);
-//                statement.setString(1, description);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changePrice(int productId, Double price) {
-//        try {
-//            if(getProduct(productId) != null)
-//            {
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.price + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
-//                PreparedStatement statement = database.getConnection().prepareStatement(query);
-//                statement.setDouble(1, price);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changeImage(int productId, String image) {
-//        try {
-//            if(getProduct(productId) != null)
-//            {
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.image + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
-//                PreparedStatement statement = database.getConnection().prepareStatement(query);
-//                statement.setString(1, image);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                resultSet.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    public void add(Product product) {
+        PreparedStatement statement = null;
+        ResultSet lastId = null;
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
+            String query = "INSERT INTO " + DatabaseInfo.productTableName + " VALUES(DEFAULT, ?, ?, ?);" +
+                            "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTableName + "', '" + DatabaseInfo.productColumnNames.id + "'));";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, product.getTitle());
+            statement.setString(2, product.getDescription());
+            statement.setDouble(3, product.getPrice());
+            lastId = statement.executeQuery();
+
+            for (String image : product.getImages()) {
+                String query2 = "INSERT INTO " + DatabaseInfo.imageTableName + " VALUES(?, ?)";
+                statement = connection.prepareStatement(query2);
+                statement.setInt(1, lastId.getInt("currval"));
+                statement.setString(2, image);
+                statement.executeUpdate();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void delete(int productId) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try{
+            connection = database.getConnection();
+            if(getProduct(productId) != null) {
+                String query = "DELETE FROM " + DatabaseInfo.productTableName + " WHERE " + DatabaseInfo.productColumnNames.id + " =?;";
+                statement = connection.prepareStatement(query);
+                statement.setInt(1, productId);
+                statement.executeUpdate();
+            }
+        }catch(SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void changeTitle(int productId, String title) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
+            if(getProduct(productId) != null) {
+                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.title + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+                statement = connection.prepareStatement(query);
+                statement.setString(1, title);
+                statement.setInt(2, productId);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void changeDescription(int productId, String description) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
+            if(getProduct(productId) != null)
+            {
+                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.description + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+                statement = connection.prepareStatement(query);
+                statement.setString(1, description);
+                statement.setInt(2, productId);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void changePrice(int productId, Double price) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
+            if(getProduct(productId) != null)
+            {
+                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.price + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+                statement = connection.prepareStatement(query);
+                statement.setDouble(1, price);
+                statement.setInt(2, productId);
+                statement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void changeImage(int productId, String image) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            if(getProduct(productId) != null)
+            {
+                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.image + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+                statement = connection.prepareStatement(query);
+                statement.setString(1, image);
+                statement.setInt(2, productId);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
 }

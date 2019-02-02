@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
+
+import nl.hsleiden.DatabaseConnection;
 import nl.hsleiden.model.User;
 import nl.hsleiden.model.DatabaseInfo;
 import org.postgresql.util.PSQLException;

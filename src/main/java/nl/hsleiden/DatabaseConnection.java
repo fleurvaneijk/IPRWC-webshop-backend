@@ -1,4 +1,4 @@
-package nl.hsleiden.persistence;
+package nl.hsleiden;
 
 import java.sql.*;
 
@@ -38,6 +38,7 @@ public class DatabaseConnection {
     }
 
     public Connection getConnection() throws SQLException {
+        connection = DriverManager.getConnection(url, username, password);
         return connection;
     }
 

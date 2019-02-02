@@ -39,16 +39,16 @@ public class ProductResource {
     @Path("/{productId}")
     @JsonView(View.Public.class)
     public Product retrieve(@PathParam("productId") int productId) {
-        System.out.println("YOOOOO");
         return service.getProduct(productId);
     }
 
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @JsonView(View.Protected.class)
-//    public void create(@Valid Product product) {
-//        service.add(product);
-//    }
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @JsonView(View.Protected.class)
+    public void create(Product product) {
+        System.out.println("YOOOOO");
+        service.add(product);
+    }
 //
 //    @DELETE
 //    @Path("/delete/{productId}")

@@ -1,8 +1,8 @@
 package nl.hsleiden.persistence;
 
+import nl.hsleiden.DatabaseConnection;
 import nl.hsleiden.model.Cart;
 import nl.hsleiden.model.DatabaseInfo;
-import org.postgresql.util.PSQLException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

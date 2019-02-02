@@ -28,9 +28,9 @@ public class ProductService extends BaseService{
         return (Product) requireResult(dao.getProduct(productId));
     }
 
-//    public void add(Product product) {
-//        dao.add(product);
-//    }
+    public void add(Product product) {
+        dao.add(product);
+    }
 //
 //    public void delete(int productId) {
 //        dao.delete(productId);
