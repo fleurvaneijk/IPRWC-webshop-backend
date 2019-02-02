@@ -22,31 +22,31 @@ public class ProductService extends BaseService{
         return dao.getAll();
     }
 
-    public Product getProduct(int productId) {
-        return (Product) requireResult(dao.getProduct(productId));
-    }
-
-    public void add(Product product) {
-        dao.add(product);
-    }
-
-    public void delete(int productId) {
-        dao.delete(productId);
-    }
-
-    public void changeTitle(int productId, String title) {
-        dao.changeTitle(productId, title);
-    }
-
-    public void changeDescription(int productId, String description) {
-        dao.changeDescription(productId, description);
-    }
-
-    public void changePrice(int productId, Double price) {
-        dao.changePrice(productId, price);
-    }
-
-    public void changeImage(int productId, String image) {
-        dao.changeImage(productId, image);
-    }
+//    public Product getProduct(int productId) {
+//        return (Product) requireResult(dao.getProduct(productId));
+//    }
+//
+//    public void add(Product product) {
+//        dao.add(product);
+//    }
+//
+//    public void delete(int productId) {
+//        dao.delete(productId);
+//    }
+//
+//    public void changeTitle(int productId, String title) {
+//        dao.changeTitle(productId, title);
+//    }
+//
+//    public void changeDescription(int productId, String description) {
+//        dao.changeDescription(productId, description);
+//    }
+//
+//    public void changePrice(int productId, Double price) {
+//        dao.changePrice(productId, price);
+//    }
+//
+//    public void changeImage(int productId, String image) {
+//        dao.changeImage(productId, image);
+//    }
 }

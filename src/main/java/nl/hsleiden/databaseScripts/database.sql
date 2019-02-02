@@ -1,6 +1,7 @@
--- DROP TABLE cart;
--- DROP TABLE product;
--- DROP TABLE user_account;
+DROP TABLE cart;
+DROP TABLE product_image;
+DROP TABLE product;
+DROP TABLE user_account;
 
 CREATE TABLE user_account (
     email             VARCHAR PRIMARY KEY,

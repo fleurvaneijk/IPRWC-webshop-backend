@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import nl.hsleiden.View;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.ArrayList;
+
 /**
  * Model for the products
  * @author Fleur van Eijk
@@ -20,13 +22,13 @@ public class Product {
     private String description;
 
     @JsonView(View.Public.class)
-    private Image[] images;
+    private ArrayList<String> images;
 
     @NotEmpty
     @JsonView(View.Public.class)
     private double price;
 
-    public Product(int id, String title, String description, Image[] images, double price) {
+    public Product(int id, String title, String description, ArrayList<String> images, double price) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -34,7 +36,7 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String title, String description, Image[] images, double price) {
+    public Product(String title, String description, ArrayList<String> images, double price) {
         this.title = title;
         this.description = description;
         this.images = images;
@@ -61,11 +63,11 @@ public class Product {
         this.description = description;
     }
 
-    public Image[] getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setImages(Image[] images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
     }
 
