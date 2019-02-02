@@ -1,6 +1,6 @@
 package nl.hsleiden.service;
 
-import nl.hsleiden.model.Cart;
+import nl.hsleiden.model.CartItem;
 import nl.hsleiden.persistence.CartDAO;
 import javax.inject.Inject;
 import java.util.Collection;
@@ -18,29 +18,25 @@ public class CartService {
         this.dao = dao;
     }
 
-    public Collection<Cart> getCart(String userEmail)
+    public Collection<CartItem> getCart(String userEmail)
     {
         return dao.getCart(userEmail);
     }
 
-    public void addToCart(Cart cart) {
-        if(dao.checkCartForProduct(cart.getUserEmail(), cart.getProductId()) == true){
-            dao.changeAmount(cart.getAmount(), cart.getUserEmail(), cart.getProductId());
+    public void addToCart(CartItem cartItem) {
+        if(dao.checkCartForProduct(cartItem.getUserEmail(), cartItem.getProductId())){
+            dao.changeAmount(cartItem.getAmount(), cartItem.getUserEmail(), cartItem.getProductId());
         }else{
-            dao.addToCart(cart.getUserEmail(), cart.getProductId());
+            dao.addToCart(cartItem.getUserEmail(), cartItem.getProductId());
         }
     }
 
-    public Cart getItemFromCart(Cart cart){
-        return dao.getItemFromCart(cart);
-    }
-
-    public void deleteFromCart(Cart cart) {
-        if(dao.checkCartForProduct(cart.getUserEmail(), cart.getProductId())){
-            if(getItemFromCart(cart).getAmount() == 1){
-                dao.deleteFromCart(cart.getUserEmail(), cart.getProductId());
+    public void deleteFromCart(CartItem cartItem) {
+        if(dao.checkCartForProduct(cartItem.getUserEmail(), cartItem.getProductId())){
+            if(cartItem.getAmount() == 1){
+                dao.deleteFromCart(cartItem.getUserEmail(), cartItem.getProductId());
             }else {
-                dao.changeAmount(-1, cart.getUserEmail(), cart.getProductId());
+                dao.changeAmount(-1, cartItem.getUserEmail(), cartItem.getProductId());
             }
         }
     }

@@ -63,8 +63,8 @@ INSERT INTO product_image VALUES('14', '/assets/charms.jpg');
 
 
 -- INSERT CART
-INSERT INTO cart VALUES('fleur.vaneijk99@gmail.com', '1', '2');
-INSERT INTO cart VALUES('fleur.vaneijk99@gmail.com', '2', '5');
-INSERT INTO cart VALUES('fleur.vaneijk99@gmail.com', '3', '1');
+INSERT INTO cartItem VALUES('fleur.vaneijk99@gmail.com', '1', '2');
+INSERT INTO cartItem VALUES('fleur.vaneijk99@gmail.com', '2', '5');
+INSERT INTO cartItem VALUES('fleur.vaneijk99@gmail.com', '3', '1');
 
-INSERT INTO cart VALUES('admin@gmail.com', '3', '10');
+INSERT INTO cartItem VALUES('admin@gmail.com', '3', '10');

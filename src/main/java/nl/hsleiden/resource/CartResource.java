@@ -3,7 +3,7 @@ package nl.hsleiden.resource;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.inject.Singleton;
 import nl.hsleiden.View;
-import nl.hsleiden.model.Cart;
+import nl.hsleiden.model.CartItem;
 import nl.hsleiden.service.CartService;
 
 import javax.annotation.security.RolesAllowed;
@@ -33,8 +33,8 @@ public class CartResource {
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addToCart(@Valid Cart cart){
-        cartService.addToCart(cart);
+    public void addToCart(@Valid CartItem cartItem){
+        cartService.addToCart(cartItem);
 
     }
 
@@ -43,8 +43,8 @@ public class CartResource {
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     @Consumes(MediaType.APPLICATION_JSON)
-    public Cart getItemFromCart(@Valid Cart cart) {
-        return cartService.getItemFromCart(cart);
+    public CartItem getItemFromCart(@Valid CartItem cartItem) {
+        return cartService.getItemFromCart(cartItem);
     }
 
     @POST
@@ -52,8 +52,8 @@ public class CartResource {
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteFromCart(@Valid Cart cart){
-        cartService.deleteFromCart(cart);
+    public void deleteFromCart(@Valid CartItem cartItem){
+        cartService.deleteFromCart(cartItem);
 
     }
 
@@ -61,7 +61,7 @@ public class CartResource {
     @Path("/{email}")
     @JsonView(View.Public.class)
     @RolesAllowed({"'ADMIN'", "'GUEST'"})
-    public Collection<Cart> getCart(@PathParam("email") String userEmail){
+    public Collection<CartItem> getCart(@PathParam("email") String userEmail){
         return cartService.getCart(userEmail);
     }
 }

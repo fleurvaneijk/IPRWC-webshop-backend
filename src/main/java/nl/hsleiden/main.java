@@ -1,12 +1,7 @@
 package nl.hsleiden;
 
-import nl.hsleiden.model.Cart;
-import nl.hsleiden.model.Product;
 import nl.hsleiden.model.User;
-import nl.hsleiden.persistence.CartDAO;
-import nl.hsleiden.persistence.ProductDAO;
 import nl.hsleiden.persistence.UserDAO;
-import nl.hsleiden.service.CartService;
 
 public class main {
     public static void main(String[] args) {
@@ -27,7 +22,7 @@ public class main {
 //        cart.getCart(1);
 //
 //        CartService bs = new CartService(cart);
-//        bs.addToCart(new Cart("fleur.vaneijk99@gmail.com", 2, 3));
+//        bs.addToCart(new CartItem("fleur.vaneijk99@gmail.com", 2, 3));
 
 
 

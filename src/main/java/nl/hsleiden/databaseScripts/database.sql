@@ -1,4 +1,4 @@
-DROP TABLE cart;
+DROP TABLE cartItem;
 DROP TABLE product_image;
 DROP TABLE product;
 DROP TABLE user_account;
@@ -23,7 +23,7 @@ CREATE TABLE product_image (
     image             VARCHAR
 );
 
-CREATE TABLE cart (
+CREATE TABLE cartItem (
     user_email        VARCHAR NOT NULL
     CONSTRAINT user_email REFERENCES user_account(email) ON DELETE CASCADE,
     product_id        INTEGER NOT NULL
