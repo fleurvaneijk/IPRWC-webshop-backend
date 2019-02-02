@@ -161,8 +161,8 @@ public class ProductDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try{
-            connection = database.getConnection();
             if(getProduct(productId) != null) {
+                connection = database.getConnection();
                 String query = "DELETE FROM " + DatabaseInfo.productTableName + " WHERE " + DatabaseInfo.productColumnNames.id + " =?;";
                 statement = connection.prepareStatement(query);
                 statement.setInt(1, productId);
@@ -185,8 +185,8 @@ public class ProductDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
-            connection = database.getConnection();
             if(getProduct(productId) != null) {
+                connection = database.getConnection();
                 String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.title + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, title);
@@ -210,9 +210,8 @@ public class ProductDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
-            connection = database.getConnection();
-            if(getProduct(productId) != null)
-            {
+            if(getProduct(productId) != null) {
+                connection = database.getConnection();
                 String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.description + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, description);
@@ -236,9 +235,8 @@ public class ProductDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
-            connection = database.getConnection();
-            if(getProduct(productId) != null)
-            {
+            if(getProduct(productId) != null) {
+                connection = database.getConnection();
                 String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.price + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
                 statement = connection.prepareStatement(query);
                 statement.setDouble(1, price);
@@ -263,8 +261,8 @@ public class ProductDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
-            if(getProduct(productId) != null)
-            {
+            if(getProduct(productId) != null) {
+                connection = database.getConnection();
                 String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.image + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, image);
