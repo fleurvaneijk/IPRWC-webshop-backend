@@ -28,11 +28,11 @@ public class User implements Principal
     @NotEmpty
     @JsonProperty
     @Length(min = 8)
-    @JsonView(View.Protected.class)
+    @JsonView(View.Public.class)
     private String password;
 
     @JsonProperty
-    @JsonView(View.Private.class)
+    @JsonView(View.Public.class)
     private String role;
 
     public User() {}

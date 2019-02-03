@@ -49,9 +49,7 @@ public class UserResource
     @GET
     @Path("/{email}")
     @JsonView(View.Public.class)
-    @RolesAllowed("GUEST")
-    public User retrieve(@PathParam("email") String email)
-    {
+    public User retrieve(@PathParam("email") String email) {
         return service.getUser(email);
     }
     
@@ -59,7 +57,6 @@ public class UserResource
     @Consumes(MediaType.APPLICATION_JSON)
     @JsonView(View.Protected.class)
     public void create(@Valid User user) {
-        System.out.println("YOOOOOOOYOOOOOOOOOOOOOOO");
         service.add(user);
     }
     
