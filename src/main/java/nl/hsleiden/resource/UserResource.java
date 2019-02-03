@@ -62,18 +62,17 @@ public class UserResource
     
     @DELETE
     @Path("/{email}")
-    @RolesAllowed("ADMIN")
+    @RolesAllowed({"ADMIN", "GUEST"})
     public void delete(@PathParam("email") String email)
     {
         service.delete(email);
     }
 
-    @PUT
-    @Path("/{user}")
-    @RolesAllowed("ADMIN")
-    public void changePassword(@Valid User user)
-    {
-        service.changePassword(user);
+    @POST
+    @Path("/{email}")
+    @RolesAllowed({"ADMIN", "GUEST"})
+    public void update(@PathParam("email") String email, @Valid User newUser) {
+        service.update(email, newUser);
     }
     
     @GET

@@ -120,19 +120,21 @@ public class UserDAO {
         }
     }
 
-    public void changePassword(User user) {
+    public void update(String oldEmail, User newUser) {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
             connection = database.getConnection();
-            if(getUser(user.getEmail()) != null) {
-                String query = "UPDATE " + DatabaseInfo.userTableName + " SET " + DatabaseInfo.userColumnNames.password + " = ? " +
-                                "WHERE " + DatabaseInfo.userColumnNames.email + " = ?;";
-                statement = connection.prepareStatement(query);
-                statement.setString(1, user.getPassword());
-                statement.setString(2, user.getEmail());
-                statement.executeUpdate();
-            }
+            String query = "UPDATE " + DatabaseInfo.userTableName + " SET " + DatabaseInfo.userColumnNames.password + " = ? , "
+                            + DatabaseInfo.userColumnNames.email + " = ? , " + DatabaseInfo.userColumnNames.name + " = ? "
+                            + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?;";
+
+            statement = connection.prepareStatement(query);
+            statement.setString(1, newUser.getPassword());
+            statement.setString(2, newUser.getEmail());
+            statement.setString(3, newUser.getName());
+            statement.setString(4, oldEmail);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

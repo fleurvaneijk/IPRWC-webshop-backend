@@ -36,10 +36,10 @@ public class UserService extends BaseService<User> {
         dao.add(user);
     }
     
-    public void changePassword(User user) {
+    public void update(String email, User newUser) {
         // Controleren of deze gebruiker wel bestaat
-        if(getUser(user.getEmail()) != null){
-            dao.changePassword(user);
+        if(getUser(email) != null){
+            dao.update(email, newUser);
         }
     }
     
