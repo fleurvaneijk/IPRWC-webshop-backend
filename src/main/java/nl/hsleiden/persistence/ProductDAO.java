@@ -56,7 +56,6 @@ public class ProductDAO {
                 Product product = new Product (resultSet1.getInt(DatabaseInfo.productColumnNames.id), resultSet1.getString(DatabaseInfo.productColumnNames.title),
                         resultSet1.getString(DatabaseInfo.productColumnNames.description), images, resultSet1.getDouble(DatabaseInfo.productColumnNames.price));
 
-                System.out.println(product.getTitle() + "\t" +  product.getDescription() + "\t" + product.getPrice());
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -73,7 +72,6 @@ public class ProductDAO {
                 e.printStackTrace();
             }
         }
-        System.out.println(products);
         return products;
     }
 
