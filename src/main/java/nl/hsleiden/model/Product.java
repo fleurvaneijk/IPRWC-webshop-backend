@@ -5,6 +5,7 @@ import nl.hsleiden.View;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Model for the products
@@ -28,6 +29,9 @@ public class Product {
     @JsonView(View.Public.class)
     private double price;
 
+    public Product(){
+    }
+
     public Product(int id, String title, String description, ArrayList<String> images, double price) {
         this.id = id;
         this.title = title;
@@ -36,11 +40,11 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String title, String description, ArrayList<String> images, double price) {
+    public Product(String title, String description, String[] images, double price) {
         this.title = title;
         this.description = description;
-        this.images = images;
         this.price = price;
+        this.images.addAll(Arrays.asList(images));
     }
 
     public int getId() {

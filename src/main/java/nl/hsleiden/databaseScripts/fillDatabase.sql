@@ -1,6 +1,6 @@
 -- INSERT USERS
-INSERT INTO user_account(email, name, password, role) VALUES('fleur.vaneijk99@gmail.com', 'Fleur van Eijk', 'wachtwoord', 'GUEST');
-INSERT INTO user_account(email, name, password, role) VALUES('admin@gmail.com', 'Admin', 'wachtwoord', 'ADMIN');
+INSERT INTO user_account VALUES('fleur.vaneijk99@gmail.com', 'Fleur van Eijk', 'wachtwoord', 'GUEST');
+INSERT INTO user_account VALUES('admin@gmail.com', 'Admin', 'wachtwoord', 'ADMIN');
 
 -- INSERT PRODUCTS
 -- product 1
@@ -59,12 +59,3 @@ INSERT INTO product_image VALUES('13', '/assets/elephant_painting.jpg');
 -- product 14
 INSERT INTO product VALUES(DEFAULT, 'Lucky Charm', 'Lucky charm uit Ghana. 1 willekeurige soort charm per bestelling', '7.50');
 INSERT INTO product_image VALUES('14', '/assets/charms.jpg');
-
-
-
--- INSERT CART
-INSERT INTO cartItem VALUES('fleur.vaneijk99@gmail.com', '1', '2');
-INSERT INTO cartItem VALUES('fleur.vaneijk99@gmail.com', '2', '5');
-INSERT INTO cartItem VALUES('fleur.vaneijk99@gmail.com', '3', '1');
-
-INSERT INTO cartItem VALUES('admin@gmail.com', '3', '10');

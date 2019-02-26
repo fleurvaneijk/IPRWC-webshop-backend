@@ -122,21 +122,27 @@ public class ProductDAO {
 
     public void add(Product product) {
         PreparedStatement statement = null;
+        PreparedStatement statementCurrval = null;
         ResultSet lastId = null;
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "INSERT INTO " + DatabaseInfo.productTableName + " VALUES(DEFAULT, ?, ?, ?);" +
-                            "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTableName + "', '" + DatabaseInfo.productColumnNames.id + "'));";
+            String query = "INSERT INTO " + DatabaseInfo.productTableName + " VALUES(DEFAULT, ?, ?, ?);";
             statement = connection.prepareStatement(query);
             statement.setString(1, product.getTitle());
             statement.setString(2, product.getDescription());
             statement.setDouble(3, product.getPrice());
-            lastId = statement.executeQuery();
+            statement.execute();
+
+            String queryCurrval = "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTableName + "', '" + DatabaseInfo.productColumnNames.id + "'));";
+            statementCurrval = connection.prepareStatement(queryCurrval);
+            lastId = statementCurrval.executeQuery();
+            System.out.println(lastId);
 
             for (String image : product.getImages()) {
                 String query2 = "INSERT INTO " + DatabaseInfo.imageTableName + " VALUES(?, ?)";
                 statement = connection.prepareStatement(query2);
+                lastId.next();
                 statement.setInt(1, lastId.getInt("currval"));
                 statement.setString(2, image);
                 statement.executeUpdate();

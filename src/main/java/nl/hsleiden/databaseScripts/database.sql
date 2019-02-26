@@ -1,12 +1,12 @@
-DROP TABLE cartItem;
+-- DROP TABLE cartItem;
 DROP TABLE product_image;
 DROP TABLE product;
 DROP TABLE user_account;
 
 CREATE TABLE user_account (
     email             VARCHAR PRIMARY KEY,
-    name              VARCHAR(100) CHECK(length(name) >=3),
-    password          VARCHAR CHECK(length(password) >=8),
+    name              VARCHAR(100),
+    password          VARCHAR,
     role              VARCHAR
 );
 
@@ -23,10 +23,10 @@ CREATE TABLE product_image (
     image             VARCHAR
 );
 
-CREATE TABLE cartItem (
-    user_email        VARCHAR NOT NULL
-    CONSTRAINT user_email REFERENCES user_account(email) ON DELETE CASCADE,
-    product_id        INTEGER NOT NULL
-    CONSTRAINT product_id REFERENCES product(id) ON DELETE CASCADE,
-    amount            INTEGER NOT NULL
-);
+-- CREATE TABLE cartItem (
+--     user_email        VARCHAR NOT NULL
+--     CONSTRAINT user_email REFERENCES user_account(email) ON DELETE CASCADE,
+--     product_id        INTEGER NOT NULL
+--     CONSTRAINT product_id REFERENCES product(id) ON DELETE CASCADE,
+--     amount            INTEGER NOT NULL
+-- );
