@@ -41,7 +41,6 @@ public class UserResource
     
     @GET
     @JsonView(View.Public.class)
-    @RolesAllowed("GUEST")
     public Collection<User> retrieveAll() {
         return service.getAll();
     }
@@ -68,7 +67,7 @@ public class UserResource
         service.delete(email);
     }
 
-    @POST
+    @PUT
     @Path("/{email}")
     @RolesAllowed({"ADMIN", "GUEST"})
     public void update(@PathParam("email") String email, @Valid User newUser) {
