@@ -7,13 +7,11 @@ import java.sql.*;
  */
 public class DatabaseConnection {
 
-    // Dit zijn de credentials om toegang te krijgen naar de database
+    // Credentials to access database
     private final String url = "jdbc:postgresql://localhost/webshop";
     private final String username = "postgres";
     private final String password = "postgres";
     private static Connection connection = null;
-    PreparedStatement statement = null;
-    ResultSet rs = null;
 
     //Constructor
     public DatabaseConnection() {
@@ -38,34 +36,6 @@ public class DatabaseConnection {
     }
 
     public Connection getConnection() throws SQLException {
-        connection = DriverManager.getConnection(url, username, password);
-        return connection;
-    }
-
-    private boolean hasConnection(){
-        if (connection != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public void disconnect(){
-        try{
-            if(statement != null){
-                statement.close();
-            }
-            if(rs != null){
-                rs.close();
-            }
-            if(connection != null){
-                connection.close();
-            }
-        }catch (SQLException sqlEx)
-        {
-            sqlEx.printStackTrace();
-            System.out.println("Couldn't disconnect from the database");
-        }
+        return DriverManager.getConnection(url, username, password);
     }
 }
