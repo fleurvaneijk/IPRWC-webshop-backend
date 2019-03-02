@@ -20,12 +20,7 @@ import nl.hsleiden.View;
 import nl.hsleiden.model.User;
 import nl.hsleiden.service.UserService;
 
-/**
- * Meer informatie over resources:
- *  https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources
- * 
- * @author Peter van Vliet
- */
+
 @Singleton
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -54,9 +49,16 @@ public class UserResource
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @JsonView(View.Protected.class)
     public void create(@Valid User user) {
         service.add(user);
+    }
+
+    @POST
+    @Path("/createAdmin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMIN")
+    public void createAdmin(@Valid User admin) {
+        service.addAdmin(admin);
     }
     
     @DELETE

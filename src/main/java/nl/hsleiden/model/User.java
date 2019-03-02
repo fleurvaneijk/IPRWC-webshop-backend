@@ -16,23 +16,23 @@ public class User implements Principal
     @NotEmpty
     @Email
     @JsonProperty
-    @JsonView(View.Public.class)
+    @JsonView(View.Private.class)
     private String email;
 
     @NotEmpty
     @JsonProperty
     @Length(min = 3, max = 100)
-    @JsonView(View.Public.class)
+    @JsonView(View.Private.class)
     private String name;
 
     @NotEmpty
     @JsonProperty
     @Length(min = 8)
-    @JsonView(View.Public.class)
+    @JsonView(View.Private.class)
     private String password;
 
     @JsonProperty
-    @JsonView(View.Public.class)
+    @JsonView(View.Private.class)
     private String role;
 
     public User() {}

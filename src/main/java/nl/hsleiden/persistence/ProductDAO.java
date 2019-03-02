@@ -137,7 +137,6 @@ public class ProductDAO {
             String queryCurrval = "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTableName + "', '" + DatabaseInfo.productColumnNames.id + "'));";
             statementCurrval = connection.prepareStatement(queryCurrval);
             lastId = statementCurrval.executeQuery();
-            System.out.println(lastId);
 
             for (String image : product.getImages()) {
                 String query2 = "INSERT INTO " + DatabaseInfo.imageTableName + " VALUES(?, ?)";

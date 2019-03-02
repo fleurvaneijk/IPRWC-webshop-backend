@@ -21,15 +21,16 @@ import org.postgresql.util.PSQLException;
 public class UserDAO {
 
     private final DatabaseConnection database;
-    private final List<User> users;
+    private final ArrayList<User> users;
     private ResultSet resultSet = null;
+    private Connection connection;
 
     public UserDAO(){
         this.database = new DatabaseConnection();
         this.users = new ArrayList<>();
     }
     
-    public List<User> getAll() {
+    public ArrayList<User> getAll() {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Connection connection = null;
@@ -63,7 +64,7 @@ public class UserDAO {
     }
     
     public User getUser(String email) {
-        User user;
+        User user = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Connection connection = null;
@@ -73,9 +74,11 @@ public class UserDAO {
             statement = connection.prepareStatement(query);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
-            resultSet.next();
-            user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
-                    resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+
+            while(resultSet.next()) {
+                user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
+                        resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+            }
         }catch(Exception sqle) {
             sqle.printStackTrace();
             return null;

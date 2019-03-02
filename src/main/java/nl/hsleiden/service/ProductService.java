@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author Fleur van Eijk
  */
 @Singleton
-public class ProductService extends BaseService{
+public class ProductService {
 
     private final ProductDAO dao;
 
@@ -25,7 +25,7 @@ public class ProductService extends BaseService{
     }
 
     public Product getProduct(int productId) {
-        return (Product) requireResult(dao.getProduct(productId));
+        return dao.getProduct(productId);
     }
 
     public void add(Product product) {
