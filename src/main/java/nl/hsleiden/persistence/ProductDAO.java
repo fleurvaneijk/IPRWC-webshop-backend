@@ -123,7 +123,7 @@ public class ProductDAO {
     public void add(Product product) {
         PreparedStatement statement = null;
         PreparedStatement statementCurrval = null;
-        ResultSet lastId = null;
+        ResultSet resultset = null;
         Connection connection = null;
         try {
             connection = database.getConnection();
@@ -136,17 +136,38 @@ public class ProductDAO {
 
             String queryCurrval = "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTableName + "', '" + DatabaseInfo.productColumnNames.id + "'));";
             statementCurrval = connection.prepareStatement(queryCurrval);
-            lastId = statementCurrval.executeQuery();
+            resultset = statementCurrval.executeQuery();
+            resultset.next();
+            int lastId = resultset.getInt("currval");
+
+            insertImages(lastId, product);
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                Objects.requireNonNull(statement).close();
+                connection.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void insertImages(int id, Product product) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
 
             for (String image : product.getImages()) {
                 String query2 = "INSERT INTO " + DatabaseInfo.imageTableName + " VALUES(?, ?)";
                 statement = connection.prepareStatement(query2);
-                lastId.next();
-                statement.setInt(1, lastId.getInt("currval"));
+                statement.setInt(1, id);
                 statement.setString(2, image);
-                statement.executeUpdate();
+                statement.execute();
             }
-
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -162,6 +183,7 @@ public class ProductDAO {
 
     public void update(int id, Product newProduct) {
         PreparedStatement statement = null;
+        PreparedStatement statement2 = null;
         Connection connection = null;
         try {
             connection = database.getConnection();
@@ -175,6 +197,14 @@ public class ProductDAO {
             statement.setDouble(3, newProduct.getPrice());
             statement.setInt(4, id);
             statement.executeUpdate();
+
+            // Delete images and instert new images
+            String query2 = "DELETE FROM " + DatabaseInfo.imageTableName + " WHERE " + DatabaseInfo.imageColumnNames.productId + " = ?";
+            statement2 = connection.prepareStatement(query);
+            statement2.setInt(1, newProduct.getId());
+            statement2.execute();
+            insertImages(newProduct.getId(), newProduct);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
