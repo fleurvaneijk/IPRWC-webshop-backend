@@ -25,7 +25,6 @@ public class Product {
     @JsonView(View.Public.class)
     private ArrayList<String> images;
 
-    @NotEmpty
     @JsonView(View.Public.class)
     private double price;
 

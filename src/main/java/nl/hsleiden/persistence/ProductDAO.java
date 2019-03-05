@@ -37,24 +37,24 @@ public class ProductDAO {
         products.clear();
         try {
             connection = database.getConnection();
-            String query1 = "SELECT * FROM " + DatabaseInfo.productTableName;
+            String query1 = "SELECT * FROM " + DatabaseInfo.productTable;
             statement1 = connection.prepareStatement(query1);
             resultSet1 = statement1.executeQuery();
 
             while (resultSet1.next()) {
-                String query2 = "SELECT "+ DatabaseInfo.imageColumnNames.image + " FROM " + DatabaseInfo.imageTableName + " WHERE product_id = " + resultSet1.getInt(DatabaseInfo.productColumnNames.id);
+                String query2 = "SELECT "+ DatabaseInfo.imageColumn.image + " FROM " + DatabaseInfo.imageTable + " WHERE product_id = " + resultSet1.getInt(DatabaseInfo.productColumn.id);
                 statement2 = connection.prepareStatement(query2);
                 resultSet2 = statement2.executeQuery();
 
                 ArrayList<String> images = new ArrayList<String>();
 
                 while(resultSet2.next()){
-                    String image = resultSet2.getString(DatabaseInfo.imageColumnNames.image);
+                    String image = resultSet2.getString(DatabaseInfo.imageColumn.image);
                     images.add(image);
                 }
 
-                Product product = new Product (resultSet1.getInt(DatabaseInfo.productColumnNames.id), resultSet1.getString(DatabaseInfo.productColumnNames.title),
-                        resultSet1.getString(DatabaseInfo.productColumnNames.description), images, resultSet1.getDouble(DatabaseInfo.productColumnNames.price));
+                Product product = new Product (resultSet1.getInt(DatabaseInfo.productColumn.id), resultSet1.getString(DatabaseInfo.productColumn.title),
+                        resultSet1.getString(DatabaseInfo.productColumn.description), images, resultSet1.getDouble(DatabaseInfo.productColumn.price));
 
                 products.add(product);
             }
@@ -84,24 +84,24 @@ public class ProductDAO {
         Connection connection = null;
         try{
             connection = database.getConnection();
-            String query = "SELECT * FROM " + DatabaseInfo.productTableName + " WHERE  " + DatabaseInfo.productColumnNames.id + " = ?";
+            String query = "SELECT * FROM " + DatabaseInfo.productTable + " WHERE  " + DatabaseInfo.productColumn.id + " = ?";
             statement1 = connection.prepareStatement(query);
             statement1.setInt(1, productId);
             resultSet1 = statement1.executeQuery();
             resultSet1.next();
 
-            String query2 = "SELECT "+ DatabaseInfo.imageColumnNames.image + " FROM " + DatabaseInfo.imageTableName + " WHERE product_id = " + resultSet1.getInt(DatabaseInfo.productColumnNames.id);
+            String query2 = "SELECT "+ DatabaseInfo.imageColumn.image + " FROM " + DatabaseInfo.imageTable + " WHERE product_id = " + resultSet1.getInt(DatabaseInfo.productColumn.id);
             statement2 = connection.prepareStatement(query2);
             resultSet2 = statement2.executeQuery();
 
             ArrayList<String> images = new ArrayList<String>();
 
             while(resultSet2.next()){
-                String image = resultSet2.getString(DatabaseInfo.imageColumnNames.image);
+                String image = resultSet2.getString(DatabaseInfo.imageColumn.image);
                 images.add(image);
             }
-            product = new Product(resultSet1.getInt(DatabaseInfo.productColumnNames.id), resultSet1.getString(DatabaseInfo.productColumnNames.title),
-                    resultSet1.getString(DatabaseInfo.productColumnNames.description), images, resultSet1.getDouble(DatabaseInfo.productColumnNames.price));
+            product = new Product(resultSet1.getInt(DatabaseInfo.productColumn.id), resultSet1.getString(DatabaseInfo.productColumn.title),
+                    resultSet1.getString(DatabaseInfo.productColumn.description), images, resultSet1.getDouble(DatabaseInfo.productColumn.price));
             return product;
         }catch(SQLException sqle) {
             sqle.printStackTrace();
@@ -127,14 +127,14 @@ public class ProductDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "INSERT INTO " + DatabaseInfo.productTableName + " VALUES(DEFAULT, ?, ?, ?);";
+            String query = "INSERT INTO " + DatabaseInfo.productTable + " VALUES(DEFAULT, ?, ?, ?);";
             statement = connection.prepareStatement(query);
             statement.setString(1, product.getTitle());
             statement.setString(2, product.getDescription());
             statement.setDouble(3, product.getPrice());
             statement.execute();
 
-            String queryCurrval = "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTableName + "', '" + DatabaseInfo.productColumnNames.id + "'));";
+            String queryCurrval = "SELECT currval(pg_get_serial_sequence('" + DatabaseInfo.productTable + "', '" + DatabaseInfo.productColumn.id + "'));";
             statementCurrval = connection.prepareStatement(queryCurrval);
             resultset = statementCurrval.executeQuery();
             resultset.next();
@@ -162,7 +162,7 @@ public class ProductDAO {
             connection = database.getConnection();
 
             for (String image : product.getImages()) {
-                String query2 = "INSERT INTO " + DatabaseInfo.imageTableName + " VALUES(?, ?)";
+                String query2 = "INSERT INTO " + DatabaseInfo.imageTable + " VALUES(?, ?)";
                 statement = connection.prepareStatement(query2);
                 statement.setInt(1, id);
                 statement.setString(2, image);
@@ -187,9 +187,9 @@ public class ProductDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.title + " = ? , "
-                    + DatabaseInfo.productColumnNames.description + " = ? , " + DatabaseInfo.productColumnNames.price + " = ? "
-                    + " WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+            String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.title + " = ? , "
+                    + DatabaseInfo.productColumn.description + " = ? , " + DatabaseInfo.productColumn.price + " = ? "
+                    + " WHERE " + DatabaseInfo.productColumn.id + " = ?;";
 
             statement = connection.prepareStatement(query);
             statement.setString(1, newProduct.getTitle());
@@ -199,10 +199,10 @@ public class ProductDAO {
             statement.executeUpdate();
 
             // Delete images and instert new images
-            String query2 = "DELETE FROM " + DatabaseInfo.imageTableName + " WHERE " + DatabaseInfo.imageColumnNames.productId + " = ?";
-            statement2 = connection.prepareStatement(query);
+            String query2 = "DELETE FROM " + DatabaseInfo.imageTable + " WHERE " + DatabaseInfo.imageColumn.productId + " = ?";
+            statement2 = connection.prepareStatement(query2);
             statement2.setInt(1, newProduct.getId());
-            statement2.execute();
+            statement2.executeUpdate();
             insertImages(newProduct.getId(), newProduct);
 
         } catch (SQLException e) {
@@ -224,7 +224,7 @@ public class ProductDAO {
         try{
             if(getProduct(productId) != null) {
                 connection = database.getConnection();
-                String query = "DELETE FROM " + DatabaseInfo.productTableName + " WHERE " + DatabaseInfo.productColumnNames.id + " =?;";
+                String query = "DELETE FROM " + DatabaseInfo.productTable + " WHERE " + DatabaseInfo.productColumn.id + " =?;";
                 statement = connection.prepareStatement(query);
                 statement.setInt(1, productId);
                 statement.executeUpdate();
@@ -248,7 +248,7 @@ public class ProductDAO {
 //        try {
 //            if(getProduct(productId) != null) {
 //                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.title + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.title + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
 //                statement = connection.prepareStatement(query);
 //                statement.setString(1, title);
 //                statement.setInt(2, productId);
@@ -273,7 +273,7 @@ public class ProductDAO {
 //        try {
 //            if(getProduct(productId) != null) {
 //                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.description + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.description + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
 //                statement = connection.prepareStatement(query);
 //                statement.setString(1, description);
 //                statement.setInt(2, productId);
@@ -298,7 +298,7 @@ public class ProductDAO {
 //        try {
 //            if(getProduct(productId) != null) {
 //                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.price + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.price + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
 //                statement = connection.prepareStatement(query);
 //                statement.setDouble(1, price);
 //                statement.setInt(2, productId);
@@ -324,7 +324,7 @@ public class ProductDAO {
 //        try {
 //            if(getProduct(productId) != null) {
 //                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTableName + " SET " + DatabaseInfo.productColumnNames.image + " = ? WHERE " + DatabaseInfo.productColumnNames.id + " = ?;";
+//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.image + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
 //                statement = connection.prepareStatement(query);
 //                statement.setString(1, image);
 //                statement.setInt(2, productId);

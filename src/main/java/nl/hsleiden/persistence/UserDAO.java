@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import javax.inject.Singleton;
 
@@ -36,13 +35,13 @@ public class UserDAO {
         Connection connection = null;
         try{
             connection = database.getConnection();
-            String query = "SELECT * FROM " + DatabaseInfo.userTableName;
+            String query = "SELECT * FROM " + DatabaseInfo.userTable;
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
 
             while(resultSet.next()){
-                User user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
-                        resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+                User user = new User(resultSet.getString(DatabaseInfo.userColumn.email), resultSet.getString(DatabaseInfo.userColumn.name),
+                        resultSet.getString(DatabaseInfo.userColumn.password), resultSet.getString(DatabaseInfo.userColumn.role));
 
                 System.out.println(user.getName());
 
@@ -70,14 +69,14 @@ public class UserDAO {
         Connection connection = null;
         try{
             connection = database.getConnection();
-            String query = "SELECT * FROM " + DatabaseInfo.userTableName + " WHERE  " + DatabaseInfo.userColumnNames.email + " = ?";
+            String query = "SELECT * FROM " + DatabaseInfo.userTable + " WHERE  " + DatabaseInfo.userColumn.email + " = ?";
             statement = connection.prepareStatement(query);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
-                user = new User(resultSet.getString(DatabaseInfo.userColumnNames.email), resultSet.getString(DatabaseInfo.userColumnNames.name),
-                        resultSet.getString(DatabaseInfo.userColumnNames.password), resultSet.getString(DatabaseInfo.userColumnNames.role));
+                user = new User(resultSet.getString(DatabaseInfo.userColumn.email), resultSet.getString(DatabaseInfo.userColumn.name),
+                        resultSet.getString(DatabaseInfo.userColumn.password), resultSet.getString(DatabaseInfo.userColumn.role));
             }
         }catch(Exception sqle) {
             sqle.printStackTrace();
@@ -100,7 +99,7 @@ public class UserDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "INSERT INTO " + DatabaseInfo.userTableName + " VALUES(?, ?, ?, ?)";
+            String query = "INSERT INTO " + DatabaseInfo.userTable + " VALUES(?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getName());
@@ -128,9 +127,9 @@ public class UserDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "UPDATE " + DatabaseInfo.userTableName + " SET " + DatabaseInfo.userColumnNames.password + " = ? , "
-                            + DatabaseInfo.userColumnNames.email + " = ? , " + DatabaseInfo.userColumnNames.name + " = ? "
-                            + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?;";
+            String query = "UPDATE " + DatabaseInfo.userTable + " SET " + DatabaseInfo.userColumn.password + " = ? , "
+                            + DatabaseInfo.userColumn.email + " = ? , " + DatabaseInfo.userColumn.name + " = ? "
+                            + " WHERE " + DatabaseInfo.userColumn.email + " = ?;";
 
             statement = connection.prepareStatement(query);
             statement.setString(1, newUser.getPassword());
@@ -158,7 +157,7 @@ public class UserDAO {
             connection = database.getConnection();
             if(getUser(email) != null)
             {
-                String query = "DELETE FROM " + DatabaseInfo.userTableName + " WHERE " + DatabaseInfo.userColumnNames.email + " = ?";
+                String query = "DELETE FROM " + DatabaseInfo.userTable + " WHERE " + DatabaseInfo.userColumn.email + " = ?";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, email);
                 statement.executeUpdate();

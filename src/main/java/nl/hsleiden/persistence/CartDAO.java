@@ -31,15 +31,15 @@ public class CartDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "SELECT " + DatabaseInfo.cartColumnNames.productId + ", " + DatabaseInfo.cartColumnNames.amount +
-                    " FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ?";
+            String query = "SELECT " + DatabaseInfo.cartColumn.productId + ", " + DatabaseInfo.cartColumn.amount +
+                    " FROM " + DatabaseInfo.cartTable + " WHERE " + DatabaseInfo.cartColumn.userEmail + " = ?";
             statement = connection.prepareStatement(query);
             statement.setString(1, userEmail);
             resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
-                CartItem cartItem = new CartItem(userEmail, resultSet.getInt(DatabaseInfo.cartColumnNames.productId),
-                        resultSet.getInt(DatabaseInfo.cartColumnNames.amount));
+                CartItem cartItem = new CartItem(userEmail, resultSet.getInt(DatabaseInfo.cartColumn.productId),
+                        resultSet.getInt(DatabaseInfo.cartColumn.amount));
                 cart.add(cartItem);
             }
         } catch (SQLException e) {
@@ -62,7 +62,7 @@ public class CartDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "INSERT INTO " + DatabaseInfo.cartTableName + " VALUES (?,?,1)";
+            String query = "INSERT INTO " + DatabaseInfo.cartTable + " VALUES (?,?,1)";
             statement = connection.prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(2, productId);
@@ -86,7 +86,7 @@ public class CartDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "SELECT * FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ? AND " + DatabaseInfo.cartColumnNames.productId + " = ?;";
+            String query = "SELECT * FROM " + DatabaseInfo.cartTable + " WHERE " + DatabaseInfo.cartColumn.userEmail + " = ? AND " + DatabaseInfo.cartColumn.productId + " = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(2, productId);
@@ -112,8 +112,8 @@ public class CartDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "UPDATE " + DatabaseInfo.cartTableName + " SET " + DatabaseInfo.cartColumnNames.amount + " = " + DatabaseInfo.cartColumnNames.amount + " + ?" + " WHERE " +
-                    DatabaseInfo.cartColumnNames.userEmail + " = ? AND " + DatabaseInfo.cartColumnNames.productId + " = ?;";
+            String query = "UPDATE " + DatabaseInfo.cartTable + " SET " + DatabaseInfo.cartColumn.amount + " = " + DatabaseInfo.cartColumn.amount + " + ?" + " WHERE " +
+                    DatabaseInfo.cartColumn.userEmail + " = ? AND " + DatabaseInfo.cartColumn.productId + " = ?;";
 
             statement = connection.prepareStatement(query);
             statement.setInt(1, difference);
@@ -138,7 +138,7 @@ public class CartDAO {
         Connection connection = null;
         try {
             connection = database.getConnection();
-            String query = "DELETE FROM " + DatabaseInfo.cartTableName + " WHERE " + DatabaseInfo.cartColumnNames.userEmail + " = ? AND " + DatabaseInfo.cartColumnNames.productId + " = ?;";
+            String query = "DELETE FROM " + DatabaseInfo.cartTable + " WHERE " + DatabaseInfo.cartColumn.userEmail + " = ? AND " + DatabaseInfo.cartColumn.productId + " = ?;";
             statement = database.getConnection().prepareStatement(query);
             statement.setString(1, userEmail);
             statement.setInt(1, productId);

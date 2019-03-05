@@ -50,9 +50,9 @@ public class ProductResource {
         service.add(product);
     }
 
-    @PUT
+    @POST
     @Path("/{productId}")
-    @RolesAllowed("ADMIN")
+//    @RolesAllowed("ADMIN")
     public void update(@PathParam("productId") int id, @Valid Product product) {
         service.update(id, product);
     }

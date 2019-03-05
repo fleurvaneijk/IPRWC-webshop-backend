@@ -14,7 +14,7 @@ CREATE TABLE product (
     id                SERIAL PRIMARY KEY,
     title             VARCHAR NOT NULL,
     description       VARCHAR,
-    price             DECIMAL(4,2) NOT NULL
+    price             DECIMAL(19,2) NOT NULL
 );
 
 CREATE TABLE product_image (
