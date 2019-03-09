@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import javax.inject.Singleton;
 
-import nl.hsleiden.DatabaseConnection;
+import nl.hsleiden.database.DatabaseConnection;
 import nl.hsleiden.model.User;
-import nl.hsleiden.model.DatabaseInfo;
+import nl.hsleiden.database.DatabaseInfo;
 import org.postgresql.util.PSQLException;
 
 /**

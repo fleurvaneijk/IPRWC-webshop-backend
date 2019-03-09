@@ -1,7 +1,7 @@
 package nl.hsleiden.persistence;
 
-import nl.hsleiden.DatabaseConnection;
-import nl.hsleiden.model.DatabaseInfo;
+import nl.hsleiden.database.DatabaseConnection;
+import nl.hsleiden.database.DatabaseInfo;
 import nl.hsleiden.model.Product;
 
 import javax.inject.Singleton;
@@ -46,7 +46,7 @@ public class ProductDAO {
                 statement2 = connection.prepareStatement(query2);
                 resultSet2 = statement2.executeQuery();
 
-                ArrayList<String> images = new ArrayList<String>();
+                ArrayList<String> images = new ArrayList<>();
 
                 while(resultSet2.next()){
                     String image = resultSet2.getString(DatabaseInfo.imageColumn.image);
@@ -76,7 +76,7 @@ public class ProductDAO {
     }
 
     public Product getProduct(int productId) {
-        Product product = null;
+        Product product;
         PreparedStatement statement1 = null;
         PreparedStatement statement2 = null;
         ResultSet resultSet1 = null;
@@ -94,7 +94,7 @@ public class ProductDAO {
             statement2 = connection.prepareStatement(query2);
             resultSet2 = statement2.executeQuery();
 
-            ArrayList<String> images = new ArrayList<String>();
+            ArrayList<String> images = new ArrayList<>();
 
             while(resultSet2.next()){
                 String image = resultSet2.getString(DatabaseInfo.imageColumn.image);
@@ -122,8 +122,8 @@ public class ProductDAO {
 
     public void add(Product product) {
         PreparedStatement statement = null;
-        PreparedStatement statementCurrval = null;
-        ResultSet resultset = null;
+        PreparedStatement statementCurrval;
+        ResultSet resultset;
         Connection connection = null;
         try {
             connection = database.getConnection();
@@ -183,7 +183,7 @@ public class ProductDAO {
 
     public void update(int id, Product newProduct) {
         PreparedStatement statement = null;
-        PreparedStatement statement2 = null;
+        PreparedStatement statement2;
         Connection connection = null;
         try {
             connection = database.getConnection();
@@ -241,105 +241,4 @@ public class ProductDAO {
             }
         }
     }
-
-//    public void changeTitle(int productId, String title) {
-//        PreparedStatement statement = null;
-//        Connection connection = null;
-//        try {
-//            if(getProduct(productId) != null) {
-//                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.title + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
-//                statement = connection.prepareStatement(query);
-//                statement.setString(1, title);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                Objects.requireNonNull(statement).close();
-//                connection.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changeDescription(int productId, String description) {
-//        PreparedStatement statement = null;
-//        Connection connection = null;
-//        try {
-//            if(getProduct(productId) != null) {
-//                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.description + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
-//                statement = connection.prepareStatement(query);
-//                statement.setString(1, description);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                Objects.requireNonNull(statement).close();
-//                connection.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changePrice(int productId, Double price) {
-//        PreparedStatement statement = null;
-//        Connection connection = null;
-//        try {
-//            if(getProduct(productId) != null) {
-//                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.price + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
-//                statement = connection.prepareStatement(query);
-//                statement.setDouble(1, price);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                Objects.requireNonNull(statement).close();
-//                connection.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void changeImage(int productId, String image) {
-//        PreparedStatement statement = null;
-//        Connection connection = null;
-//        try {
-//            if(getProduct(productId) != null) {
-//                connection = database.getConnection();
-//                String query = "UPDATE " + DatabaseInfo.productTable + " SET " + DatabaseInfo.productColumn.image + " = ? WHERE " + DatabaseInfo.productColumn.id + " = ?;";
-//                statement = connection.prepareStatement(query);
-//                statement.setString(1, image);
-//                statement.setInt(2, productId);
-//                statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try{
-//                Objects.requireNonNull(statement).close();
-//                connection.close();
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }

@@ -1,4 +1,4 @@
-package nl.hsleiden.model;
+package nl.hsleiden.database;
 
 /**
  * This class defines all the names in the database
@@ -29,13 +29,5 @@ public class DatabaseInfo {
     public class imageColumn {
         public static final String productId = "product_id";
         public static final String image  = "image";
-    }
-
-    // CART
-    public static final String cartTable = "cart";
-    public class cartColumn {
-        public static final String userEmail = "user_email";
-        public static final String productId = "product_id";
-        public static final String amount = "amount";
     }
 }

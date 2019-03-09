@@ -1,4 +1,4 @@
-package nl.hsleiden;
+package nl.hsleiden.database;
 
 import java.sql.*;
 
