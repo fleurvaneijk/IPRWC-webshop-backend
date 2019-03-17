@@ -21,7 +21,6 @@ public class User implements Principal
 
     @NotEmpty
     @JsonProperty
-    @Length(min = 3, max = 100)
     @JsonView(View.Private.class)
     private String name;
 

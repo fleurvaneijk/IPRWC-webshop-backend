@@ -42,7 +42,8 @@ public class UserResource
     
     @GET
     @Path("/{email}")
-    @JsonView(View.Public.class)
+    @JsonView(View.Private.class)
+    // TODO: 18/03/19 wanneer ik deze gegevens onzichtbaar maak voor postman ziet mn frontend ze ook niet meer 
     public User retrieve(@PathParam("email") String email) {
         return service.getUser(email);
     }
@@ -69,7 +70,7 @@ public class UserResource
         service.delete(email);
     }
 
-    @PUT
+    @POST
     @Path("/{email}")
     @RolesAllowed({"ADMIN", "GUEST"})
     public void update(@PathParam("email") String email, @Valid User newUser) {

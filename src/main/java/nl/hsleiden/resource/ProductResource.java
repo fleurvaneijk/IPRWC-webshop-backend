@@ -63,32 +63,4 @@ public class ProductResource {
     public void delete(@PathParam("productId") int productId) {
         service.delete(productId);
     }
-
-//    @PUT
-//    @Path("/changeTitle/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changeTitle(@PathParam("productId") int productId, String title) {
-//        service.changeTitle(productId, title);
-//    }
-//
-//    @PUT
-//    @Path("/changeDescription/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changeDescription(@PathParam("productId") int productId, String description) {
-//        service.changeDescription(productId, description);
-//    }
-//
-//    @PUT
-//    @Path("/changeImage/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changeImage(@PathParam("productId") int productId, String image) {
-//        service.changeImage(productId, image);
-//    }
-//
-//    @PUT
-//    @Path("/changePrice/{productId}")
-//    @RolesAllowed("ADMIN")
-//    public void changePrice(@PathParam("productId") int productId, double price) {
-//        service.changePrice(productId, price);
-//    }
 }
