@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import nl.hsleiden.model.User;
 import nl.hsleiden.persistence.UserDAO;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -26,12 +27,10 @@ public class AuthenticationService implements Authenticator<BasicCredentials, Us
     }
 
     @Override
-    public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException
-    {
+    public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
         User user = userDAO.getUser(credentials.getUsername());
         
-        if (user != null && user.getPassword().equals(credentials.getPassword()))
-        {
+        if (user != null && this.checkPassword(credentials.getPassword(), user.getPassword())) {
             return Optional.of(user);
         }
         
@@ -42,5 +41,12 @@ public class AuthenticationService implements Authenticator<BasicCredentials, Us
     public boolean authorize(User user, String roleName)
     {
         return user.hasRole(roleName);
+    }
+
+    private boolean checkPassword(String plaintext, String hashedPassword){
+        boolean corresponds = false;
+        if (BCrypt.checkpw(plaintext, hashedPassword))
+            corresponds = true;
+        return corresponds;
     }
 }

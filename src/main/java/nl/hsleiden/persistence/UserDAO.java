@@ -12,6 +12,7 @@ import nl.hsleiden.database.DatabaseConnection;
 import nl.hsleiden.model.User;
 import nl.hsleiden.database.DatabaseInfo;
 import org.postgresql.util.PSQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * @author Fleur van Eijk
@@ -98,12 +99,14 @@ public class UserDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()); // hashed password.
+
             connection = database.getConnection();
             String query = "INSERT INTO " + DatabaseInfo.userTable + " VALUES(?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getName());
-            statement.setString(3, user.getPassword());
+            statement.setString(3, hashedPassword);
             statement.setString(4, user.getRole());
             statement.executeUpdate();
         }catch(PSQLException psql){
@@ -126,13 +129,16 @@ public class UserDAO {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
+            String hashedPassword = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt()); // hashed password.
+
+
             connection = database.getConnection();
             String query = "UPDATE " + DatabaseInfo.userTable + " SET " + DatabaseInfo.userColumn.password + " = ? , "
                             + DatabaseInfo.userColumn.email + " = ? , " + DatabaseInfo.userColumn.name + " = ? "
                             + " WHERE " + DatabaseInfo.userColumn.email + " = ?;";
 
             statement = connection.prepareStatement(query);
-            statement.setString(1, newUser.getPassword());
+            statement.setString(1, hashedPassword);
             statement.setString(2, newUser.getEmail());
             statement.setString(3, newUser.getName());
             statement.setString(4, oldEmail);
